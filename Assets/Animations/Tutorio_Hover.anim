@@ -68,7 +68,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: 
+    path: Tutorio
     classID: 114
     script: {fileID: 11500000, guid: 2185d45442275444e9cd7fade79ae8b4, type: 3}
     flags: 0
@@ -90,7 +90,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 0
+      path: 1078542315
       attribute: 3305885265
       script: {fileID: 11500000, guid: 2185d45442275444e9cd7fade79ae8b4, type: 3}
       typeID: 114
@@ -254,7 +254,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: 
+    path: Tutorio
     classID: 114
     script: {fileID: 11500000, guid: 2185d45442275444e9cd7fade79ae8b4, type: 3}
     flags: 0

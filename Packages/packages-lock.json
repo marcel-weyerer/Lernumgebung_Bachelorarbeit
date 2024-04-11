@@ -92,14 +92,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.pico.livepreview": {
-      "version": "file:C:/Users/Marcel/Desktop/PICO Unity Live Preview Plugin (Experiment)",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.xr.management": "4.0.0"
-      }
-    },
     "com.unity.render-pipelines.core": {
       "version": "14.0.9",
       "depth": 1,

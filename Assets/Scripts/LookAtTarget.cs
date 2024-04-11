@@ -12,9 +12,6 @@ public class LookAtTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Turn this GameObject towards target
-        //transform.LookAt(target);
-
         // Get desired direction
         Vector3 dir = target.position - transform.position;
 

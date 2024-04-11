@@ -7,33 +7,29 @@ public class ActivateTeleportationRay : MonoBehaviour
 {
     public GameObject rightTeleportationRay;
 
-    private List<InputDevice> rightHandedControllers;
+    private InputDevice rightController;
 
     // Start is called before the first frame update
     void Start()
     {
         // Get right hand controller
-        rightHandedControllers = new List<InputDevice>();
+        var rightHandedControllers = new List<InputDevice>();
         var desiredCharacteristics = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, rightHandedControllers);
+
+        if (rightHandedControllers.Count > 0 )
+            rightController = rightHandedControllers[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (var device in rightHandedControllers)
-        {
-            Vector2 thumbStickValue;
+        Vector2 thumbStickValue;
 
-            // Enable Teleportation Ray when thumb Stick is moved foreward enough
-            if (device.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.y > 0.5f))
-            {
-                rightTeleportationRay.SetActive(true);
-            }
-            else
-            {
-                rightTeleportationRay.SetActive(false);
-            }
-        }
+        // Enable Teleportation Ray when thumb Stick is moved foreward enough
+        if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.y >= 0.5f))
+            rightTeleportationRay.SetActive(true);
+        else
+            rightTeleportationRay.SetActive(false);
     }
 }

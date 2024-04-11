@@ -6,6 +6,14 @@ using UnityEngine.Video;
 [System.Serializable]
 public class Lesson
 {
+    // Enum for all available Functions for the conditions
+    public enum FunctionOption
+    {
+        A_ButtonPress,
+        RotateLeft,
+        RotateRight
+    };
+
     // Introduction to the new lesson. What is the lesson about?
     [SerializeField]
     private AudioClip intro;
@@ -18,16 +26,13 @@ public class Lesson
     [SerializeField]
     private VideoClip instructionVideo;
 
-    // Render Texture necessary for playing the instruction video
+    // Conditions that need to be met to complete the lesson
     [SerializeField]
-    private RenderTexture renderTexture;
+    private FunctionOption[] conditions;
 
-    Lesson(AudioClip intro, AudioClip instructionAudio, VideoClip insturctionVideo)
-    {
-        this.intro = intro;
-        this.instructionAudio = instructionAudio;
-        this.instructionVideo = insturctionVideo;
-    }
+    // Audio that is being played when Lesson is completed
+    [SerializeField]
+    private AudioClip congratulation;
 
     public AudioClip getIntro()
     {
@@ -44,8 +49,13 @@ public class Lesson
         return instructionVideo;
     }
 
-    public RenderTexture getRenderTexure()
+    public FunctionOption[] getConditions()
     {
-        return renderTexture;
+        return conditions;
+    }
+    
+    public AudioClip getCongratulation()
+    {
+        return congratulation;
     }
 }
