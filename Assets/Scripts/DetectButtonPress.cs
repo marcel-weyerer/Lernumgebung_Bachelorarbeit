@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,14 +9,18 @@ using static Lesson;
 public class DetectButtonPress : MonoBehaviour
 {
     // Dictionary that connects a FunctionOption to a specific method
-    private Dictionary<FunctionOption, System.Func<bool>> functionLookup;
+    private Dictionary<FunctionOption, Func<bool>> functionLookup;
 
     private InputDevice rightController;
 
-    // Property to check if a specific Input has been made
+    // Variable to check if a specific Input has been made
     private bool inputDetected;
 
+    // Variable to check if couroutine is currently running
     private bool coroutineStarted;
+
+    // Event that is triggered when all conditions of the current lesson have been met
+    public event Action OnMovePosition;
 
     // Start is called before the first frame update
     void Start()
@@ -103,6 +108,9 @@ public class DetectButtonPress : MonoBehaviour
         var startTime = Time.time;
 
         yield return new WaitUntil(() => (Time.time - startTime) > time);
+
+        // Invoke event to move Tutorio
+        OnMovePosition?.Invoke();
 
         // Set inputDetected to true when we have waited long enough
         inputDetected = true;

@@ -1,28 +1,53 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class MoveToView : MonoBehaviour
 {
     public Transform Player;
 
     // Rotation speed when turning towards target
-    [Range(0f, 0.5f)]
+    [Range(0f, 1f)]
     public float moveSpeed;
 
-    // Update is called once per frame
-    void Update()
+    // List of positions that Tutorio will move to on specific events
+    [SerializeField]
+    private Vector3[] positions;
+    private int currentposition;
+
+    private void Start()
     {
-        if (Player.position.y - transform.position.y > 0.2f || Player.position.y - transform.position.y < -0.2f)
+        GetComponentInParent<DetectButtonPress>().OnMovePosition += MoveToNextPosition;
+
+        currentposition = -1;
+    }
+
+    private void MoveToNextPosition()
+    {
+        currentposition++;
+
+        if (currentposition < positions.Length)
+        {
+            StartCoroutine(TranslateSmoothly(positions[currentposition]));
+        }
+    }
+
+    private IEnumerator TranslateSmoothly(Vector3 nextPosition)
+    {
+        yield return new WaitUntil(() =>
         {
             // Move our position a step closer to the target.
             var step = moveSpeed * Time.deltaTime; // calculate distance to move
 
-            // Only move in y-coordinate
-            var targetPosition = new Vector3(transform.position.x, Player.position.y, transform.position.z);
+            // Smoothly move to target position
+            transform.position = Vector3.MoveTowards(transform.position, nextPosition, step);
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-        }
+            if (Vector3.Distance(transform.position, nextPosition) < 0.001)
+            {
+                transform.position = nextPosition;
+                return true;
+            }
+
+            return false;
+        });
     }
 }

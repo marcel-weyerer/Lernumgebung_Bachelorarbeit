@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -15,7 +15,15 @@ public class TutorioLessonController : MonoBehaviour
 
     // AudioSource of Tutorio
     [SerializeField]
-    private AudioSource audioSource;
+    private AudioSource tutorioAudioSource;
+
+    // AudioSource of Video
+    [SerializeField]
+    private AudioSource videoAudioSource;
+
+    // AudioSource of Player
+    [SerializeField]
+    private AudioSource playerAudioSource;
 
     // GameObject used for playing description video
     [SerializeField]
@@ -25,11 +33,24 @@ public class TutorioLessonController : MonoBehaviour
     [SerializeField]
     private RenderTexture renderTexture;
 
+    // Audio Files
+    // Sound effect when instruction video appears or vanishes
+    [SerializeField]
+    private AudioClip videoVisibility;
+
+    // Sound effect when completing a lesson
+    [SerializeField]
+    private AudioClip lessonCompleteAudio;
+
+    // Sound effect when completing a chapter
+    [SerializeField]
+    private AudioClip chapterCompleteAudio;
+
     // The animator that controls Tutorio
     private Animator animator;
 
     // Event that is triggered when all conditions of the current lesson have been met
-    private UnityEvent LessonCompleted;
+    public event Action OnLessonCompleted;
 
     // Start is called before the first frame update
     void Start()
@@ -38,10 +59,12 @@ public class TutorioLessonController : MonoBehaviour
 
         currentLesson = -1;
 
-        LessonCompleted = new UnityEvent();
+        OnLessonCompleted += StartCongrats;
+
+        //OnLessonCompleted = new UnityEvent();
 
         // Listen for Event on Completion
-        LessonCompleted.AddListener(StartCongrats);
+        //OnLessonCompleted.AddListener(StartCongrats);
     }
 
     public void StartHoverAnim()
@@ -56,29 +79,31 @@ public class TutorioLessonController : MonoBehaviour
         if (currentLesson < lessons.Length)
         {
             if (lessons[currentLesson].getIntro() != null)
-                PlayAudioClip(lessons[currentLesson].getIntro());   // Play introduction audio
+                PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getIntro());   // Play introduction audio
             StartCoroutine(WaitForAudio());     // Wait for audio to finish playing
         } else
         {
-
+            PlayAudioClip(playerAudioSource, chapterCompleteAudio);
         }
     }
 
     private IEnumerator WaitForAudio()
     {
-        yield return new WaitUntil(() => audioSource.isPlaying == false);
+        yield return new WaitUntil(() => tutorioAudioSource.isPlaying == false);
 
         // When introduction has finished playing, start playing the description video
         PlayVideoClip();
     }
 
-    private void PlayAudioClip(AudioClip clip)
+    private void PlayAudioClip(AudioSource source, AudioClip clip)
     {
         if (clip == null)
             throw new System.Exception("Missing Audio Clip!");
+        if (source == null)
+            throw new System.Exception("Missing Audio Source!");
 
-        audioSource.clip = clip;
-        audioSource.Play();
+        source.clip = clip;
+        source.Play();
     }
 
     private void PlayVideoClip()
@@ -97,6 +122,7 @@ public class TutorioLessonController : MonoBehaviour
 
         // Activate description video
         video.SetActive(true);
+        PlayAudioClip(videoAudioSource, videoVisibility);
 
         // Wait until all conditions of current lesson have been met
         StartCoroutine(WaitForCompletion());
@@ -106,7 +132,7 @@ public class TutorioLessonController : MonoBehaviour
         StartCoroutine(LookAtInstruction(3));
 
         // Play instruction audio
-        PlayAudioClip(lessons[currentLesson].getInstructionAudio());
+        PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getInstructionAudio());
     }
 
     private IEnumerator LookAtInstruction(int sec)
@@ -127,9 +153,11 @@ public class TutorioLessonController : MonoBehaviour
             conditionComponent.SetInputDetected();
             yield return new WaitUntil(() => conditionComponent.ActivateSelectedFunction(condition));
         }
-
         // When all conditions have been met trigger LessonCompleted
-        LessonCompleted.Invoke();
+        OnLessonCompleted?.Invoke();
+
+        PlayAudioClip(playerAudioSource, lessonCompleteAudio);
+        PlayAudioClip(videoAudioSource, videoVisibility);
     }
 
     // StartCongrats is being called, when a lesson has been completed successfully
@@ -142,6 +170,6 @@ public class TutorioLessonController : MonoBehaviour
         video.SetActive(false);
 
         // Play Audio Congratulation
-        PlayAudioClip(lessons[currentLesson].getCongratulation());
+        PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getCongratulation());
     }
 }
