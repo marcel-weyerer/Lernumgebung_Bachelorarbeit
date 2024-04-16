@@ -14,7 +14,7 @@ public class MoveToView : MonoBehaviour
     private Vector3[] positions;
     private int currentposition;
 
-    private void Start()
+    void Start()
     {
         GetComponentInParent<DetectButtonPress>().OnMovePosition += MoveToNextPosition;
 
@@ -24,6 +24,8 @@ public class MoveToView : MonoBehaviour
     private void MoveToNextPosition()
     {
         currentposition++;
+
+        Debug.Log(currentposition);
 
         if (currentposition < positions.Length)
         {

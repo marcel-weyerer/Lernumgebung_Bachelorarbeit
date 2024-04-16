@@ -60,11 +60,6 @@ public class TutorioLessonController : MonoBehaviour
         currentLesson = -1;
 
         OnLessonCompleted += StartCongrats;
-
-        //OnLessonCompleted = new UnityEvent();
-
-        // Listen for Event on Completion
-        //OnLessonCompleted.AddListener(StartCongrats);
     }
 
     public void StartHoverAnim()

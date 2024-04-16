@@ -8,6 +8,9 @@ using static Lesson;
 
 public class DetectButtonPress : MonoBehaviour
 {
+    // Teleport Waypoint
+    public GameObject teleportWaypoint;
+
     // Dictionary that connects a FunctionOption to a specific method
     private Dictionary<FunctionOption, Func<bool>> functionLookup;
 
@@ -22,6 +25,8 @@ public class DetectButtonPress : MonoBehaviour
     // Event that is triggered when all conditions of the current lesson have been met
     public event Action OnMovePosition;
 
+    private bool waypointEnter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,15 +38,17 @@ public class DetectButtonPress : MonoBehaviour
         if (rightHandedControllers.Count > 0)
             rightController = rightHandedControllers[0];
 
-        coroutineStarted = false;
-
         // Initialize Dictionary
         functionLookup = new Dictionary<FunctionOption, System.Func<bool>>()
         {
             { FunctionOption.A_ButtonPress, DetectA_Button },
             { FunctionOption.RotateLeft, DetectRotationLeft },
-            { FunctionOption.RotateRight, DetectRotationRight }
+            { FunctionOption.RotateRight, DetectRotationRight },
+            { FunctionOption.Teleport, DetectTeleport }
         };
+
+        coroutineStarted = false;
+        waypointEnter = false;
     }
 
     public void SetInputDetected()
@@ -70,14 +77,21 @@ public class DetectButtonPress : MonoBehaviour
     private bool DetectRotationLeft()
     {
         Vector2 thumbStickValue;
+        Coroutine coroutine = null;
 
         // Start Measuring Time until we have waited long enough or until Player has stopped rotating
         if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.x <= -0.5f)) {
             if (!coroutineStarted)
-                StartCoroutine(MeasureTime(2f));
+                coroutine = StartCoroutine(MeasureTime(2f));
         } else {
-            StopCoroutine(MeasureTime(2f));
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+            coroutineStarted= false;
         }
+
+        // Invoke event to move Tutorio
+        if (inputDetected)
+            OnMovePosition?.Invoke();
 
         // Will only be true when the Player has rotated for long enough
         return inputDetected;
@@ -86,20 +100,44 @@ public class DetectButtonPress : MonoBehaviour
     private bool DetectRotationRight()
     {
         Vector2 thumbStickValue;
+        Coroutine coroutine = null;
 
         // Start Measuring Time until we have waited long enough or until Player has stopped rotating
         if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.x >= 0.5f))
         {
             if (!coroutineStarted)
-                StartCoroutine(MeasureTime(2f));
+                coroutine = StartCoroutine(MeasureTime(2f));
         }
         else
         {
-            StopCoroutine(MeasureTime(2f));
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+            coroutineStarted = false;
         }
+
+        // Invoke event to move Tutorio
+        if (inputDetected)
+            OnMovePosition?.Invoke();
 
         // Will only be true when the Player has rotated for long enough
         return inputDetected;
+    }
+
+    private bool DetectTeleport()
+    {
+        // Activate Waypoint and add Listener to Trigger Event
+        if (!teleportWaypoint.activeInHierarchy)
+            teleportWaypoint.SetActive(true);
+        teleportWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEnter = true;
+
+        bool entered = waypointEnter;
+        waypointEnter = false;
+
+        // Invoke event to move Tutorio
+        if (entered)
+            OnMovePosition?.Invoke();
+
+        return entered;
     }
 
     private IEnumerator MeasureTime(float time)
@@ -109,8 +147,7 @@ public class DetectButtonPress : MonoBehaviour
 
         yield return new WaitUntil(() => (Time.time - startTime) > time);
 
-        // Invoke event to move Tutorio
-        OnMovePosition?.Invoke();
+        rightController.SendHapticImpulse(2, 0.3f);
 
         // Set inputDetected to true when we have waited long enough
         inputDetected = true;
