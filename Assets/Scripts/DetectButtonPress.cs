@@ -11,6 +11,12 @@ public class DetectButtonPress : MonoBehaviour
     // Teleport Waypoint
     public GameObject teleportWaypoint;
 
+    // Continuous Move Waypoint
+    public GameObject moveWaypoint;
+
+    // XR Origin GameObject
+    private GameObject player;
+
     // Dictionary that connects a FunctionOption to a specific method
     private Dictionary<FunctionOption, Func<bool>> functionLookup;
 
@@ -25,7 +31,9 @@ public class DetectButtonPress : MonoBehaviour
     // Event that is triggered when all conditions of the current lesson have been met
     public event Action OnMovePosition;
 
-    private bool waypointEnter;
+    private bool waypointEntered;
+
+    private IEnumerator measure;
 
     // Start is called before the first frame update
     void Start()
@@ -44,11 +52,15 @@ public class DetectButtonPress : MonoBehaviour
             { FunctionOption.A_ButtonPress, DetectA_Button },
             { FunctionOption.RotateLeft, DetectRotationLeft },
             { FunctionOption.RotateRight, DetectRotationRight },
-            { FunctionOption.Teleport, DetectTeleport }
+            { FunctionOption.Teleport, DetectTeleport },
+            { FunctionOption.ContinuousMove, DetectContinuousMove }
         };
 
+        // Find XR Origin GameObject
+        player = GameObject.FindGameObjectWithTag("Player");
+
         coroutineStarted = false;
-        waypointEnter = false;
+        waypointEntered = false;
     }
 
     public void SetInputDetected()
@@ -77,15 +89,20 @@ public class DetectButtonPress : MonoBehaviour
     private bool DetectRotationLeft()
     {
         Vector2 thumbStickValue;
-        Coroutine coroutine = null;
+
+        // Activate rotation functionality
+        player.GetComponent<ActionBasedContinuousTurnProvider>().enabled = true;
 
         // Start Measuring Time until we have waited long enough or until Player has stopped rotating
         if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.x <= -0.5f)) {
             if (!coroutineStarted)
-                coroutine = StartCoroutine(MeasureTime(2f));
+            {
+                measure = MeasureTime(2f);
+                StartCoroutine(measure);
+            }
         } else {
-            if (coroutine != null)
-                StopCoroutine(coroutine);
+            if (measure != null)
+                StopCoroutine(measure);
             coroutineStarted= false;
         }
 
@@ -100,18 +117,23 @@ public class DetectButtonPress : MonoBehaviour
     private bool DetectRotationRight()
     {
         Vector2 thumbStickValue;
-        Coroutine coroutine = null;
+
+        // Activate rotation functionality
+        player.GetComponent<ActionBasedContinuousTurnProvider>().enabled = true;
 
         // Start Measuring Time until we have waited long enough or until Player has stopped rotating
         if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.x >= 0.5f))
         {
             if (!coroutineStarted)
-                coroutine = StartCoroutine(MeasureTime(2f));
+            {
+                measure = MeasureTime(2f);
+                StartCoroutine(measure);
+            }
         }
         else
         {
-            if (coroutine != null)
-                StopCoroutine(coroutine);
+            if (measure != null)
+                StopCoroutine(measure);
             coroutineStarted = false;
         }
 
@@ -125,13 +147,40 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectTeleport()
     {
-        // Activate Waypoint and add Listener to Trigger Event
-        if (!teleportWaypoint.activeInHierarchy)
-            teleportWaypoint.SetActive(true);
-        teleportWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEnter = true;
+        // Activate teleportation functionality
+        player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
-        bool entered = waypointEnter;
-        waypointEnter = false;
+        // Activate Waypoint and add Listener to Trigger Event
+        if (!teleportWaypoint.activeInHierarchy && !waypointEntered)
+            teleportWaypoint.SetActive(true);
+        teleportWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
+
+        // Reset waypointEnter
+        bool entered = waypointEntered;
+        waypointEntered = false;
+
+        // Invoke event to move Tutorio
+        if (entered)
+            OnMovePosition?.Invoke();
+
+        return entered;
+    }
+
+    private bool DetectContinuousMove()
+    {
+        // Deactivate Teleportation
+        player.GetComponent<ActivateTeleportationRay>().enabled = false;
+        // Activate Continuous Move
+        player.GetComponent<ActionBasedContinuousMoveProvider>().enabled = true;
+
+        // Activate Waypoint and add Listener to Trigger Event
+        if (!moveWaypoint.activeInHierarchy && !waypointEntered)
+            moveWaypoint.SetActive(true);
+        moveWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
+
+        // Reset waypointEnter
+        bool entered = waypointEntered;
+        waypointEntered = false;
 
         // Invoke event to move Tutorio
         if (entered)

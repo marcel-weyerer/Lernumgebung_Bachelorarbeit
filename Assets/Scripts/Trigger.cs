@@ -11,10 +11,10 @@ public class Trigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Trigger - Waypoint Entered");
-
         if (!other.gameObject.CompareTag("Player"))
             return;
+
+        Debug.Log("Event Invoked");
 
         OnPlayerEnter?.Invoke();
 

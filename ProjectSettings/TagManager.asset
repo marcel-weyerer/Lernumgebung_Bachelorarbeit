@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GrabInteractor
   - TeleportWaypoint
+  - ContinuousMoveWaypoint
   layers:
   - Default
   - TransparentFX

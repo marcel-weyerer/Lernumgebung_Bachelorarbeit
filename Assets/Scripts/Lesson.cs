@@ -12,7 +12,8 @@ public class Lesson
         A_ButtonPress,
         RotateLeft,
         RotateRight,
-        Teleport
+        Teleport,
+        ContinuousMove
     };
 
     // Introduction to the new lesson. What is the lesson about?

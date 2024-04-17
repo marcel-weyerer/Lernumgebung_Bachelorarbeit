@@ -25,8 +25,6 @@ public class MoveToView : MonoBehaviour
     {
         currentposition++;
 
-        Debug.Log(currentposition);
-
         if (currentposition < positions.Length)
         {
             StartCoroutine(TranslateSmoothly(positions[currentposition]));
