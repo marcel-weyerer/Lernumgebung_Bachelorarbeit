@@ -46,6 +46,10 @@ public class TutorioLessonController : MonoBehaviour
     [SerializeField]
     private AudioClip chapterCompleteAudio;
 
+    // GameObject to transition to next scene
+    [SerializeField]
+    private GameObject levelChanger;
+
     // The animator that controls Tutorio
     private Animator animator;
 
@@ -79,6 +83,7 @@ public class TutorioLessonController : MonoBehaviour
         } else
         {
             PlayAudioClip(playerAudioSource, chapterCompleteAudio);
+            levelChanger.GetComponent<LevelChanger>().FadeToLevel("TutorialInteraction");
         }
     }
 
