@@ -2304,27 +2304,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lessons:
   - intro: {fileID: 8300000, guid: d803a83f57aead345984e7fd68ab966b, type: 3}
-    instructionAudio: {fileID: 8300000, guid: aefcd3b640b1e2840a6aaa2d4b6e116e, type: 3}
+    instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: aefcd3b640b1e2840a6aaa2d4b6e116e, type: 3}
+      lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: 57d380adab30cfd4a95f903bd724f6af, type: 3}
     conditions: 00000000
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 6cab1c45d07141a4ab4ce39fe137ef9e, type: 3}
-    instructionAudio: {fileID: 8300000, guid: 307994a05ef43e74ca29f3d1e196df35, type: 3}
+    instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 307994a05ef43e74ca29f3d1e196df35, type: 3}
+      lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: 7e70e5225d1e9ce4bbfccf983e97f7ea, type: 3}
     conditions: 01000000
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 0}
-    instructionAudio: {fileID: 8300000, guid: 2794ae12c2f15ff4ea13ac70934cee80, type: 3}
+    instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 2794ae12c2f15ff4ea13ac70934cee80, type: 3}
+      lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: 7e70e5225d1e9ce4bbfccf983e97f7ea, type: 3}
     conditions: 02000000
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 8fbee0057069edc4eb4031d4ec306f79, type: 3}
-    instructionAudio: {fileID: 8300000, guid: d7dedd7298a886f478ebca9f53b2338e, type: 3}
+    instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 88084a6189f267343a4cc37abf40b6af, type: 3}
+      lookAtTarget: {fileID: 64289596}
+    - instructionType: 1
+      audioClip: {fileID: 8300000, guid: 66019ed8ac07e7f44bba91f2b0416665, type: 3}
+      lookAtTarget: {fileID: 1606517890}
     instructionVideo: {fileID: 32900000, guid: 9a9bc26afb81845469d06134b9953f88, type: 3}
     conditions: 03000000
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 811962d6e8f2de64090dda07187ec01c, type: 3}
-    instructionAudio: {fileID: 8300000, guid: ac9e0f0ef118be3459c282790c01f318, type: 3}
+    instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: ac9e0f0ef118be3459c282790c01f318, type: 3}
+      lookAtTarget: {fileID: 64289596}
+    - instructionType: 1
+      audioClip: {fileID: 8300000, guid: 32d097f98daf6e74aab10a4d0f758b76, type: 3}
+      lookAtTarget: {fileID: 1331470288}
     instructionVideo: {fileID: 32900000, guid: 5c6e4123dca776a49a740b599f78ab4f, type: 3}
     conditions: 04000000
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
@@ -2333,7 +2354,7 @@ MonoBehaviour:
   playerAudioSource: {fileID: 208425904}
   video: {fileID: 64289596}
   renderTexture: {fileID: 8400000, guid: 298a08347ca9ab34b8982f7e4f2fbf18, type: 2}
-  videoVisibility: {fileID: 8300000, guid: 85f7938650085944fb31722f526e6d33, type: 3}
+  hideShowVideoSound: {fileID: 8300000, guid: 85f7938650085944fb31722f526e6d33, type: 3}
   lessonCompleteAudio: {fileID: 8300000, guid: 28ad8e2b086ccaf40ae00803184c6ad8, type: 3}
   chapterCompleteAudio: {fileID: 8300000, guid: 82f78d7e49d7450459c0467dd0194a13, type: 3}
   levelChanger: {fileID: 4295094369381230817}

@@ -1,11 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
 [System.Serializable]
 public class Lesson
 {
+    [System.Serializable]
+    public struct Instruction
+    {
+        public InstructionType instructionType;
+        public AudioClip audioClip;
+        public GameObject lookAtTarget;
+    }
+
+    public enum InstructionType { Video, Spawn }
+
     // Enum for all available Functions for the conditions
     public enum FunctionOption
     {
@@ -22,7 +30,8 @@ public class Lesson
 
     // Instruction für the lesson
     [SerializeField]
-    private AudioClip instructionAudio;
+    //private AudioClip instructionAudio;
+    private Instruction[] instructions;
 
     // Video that shows how the lesson can be completed
     [SerializeField]
@@ -41,9 +50,9 @@ public class Lesson
         return intro;
     }
 
-    public AudioClip getInstructionAudio()
+    public Instruction[] getInstructions()
     {
-        return instructionAudio;
+        return instructions;
     }
 
     public VideoClip getInstructionVideo()

@@ -63,7 +63,7 @@ public class DetectButtonPress : MonoBehaviour
         waypointEntered = false;
     }
 
-    public void SetInputDetected()
+    public void ResetInputDetected()
     {
         inputDetected = false;
     }
@@ -150,9 +150,6 @@ public class DetectButtonPress : MonoBehaviour
         // Activate teleportation functionality
         player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
-        // Activate Waypoint and add Listener to Trigger Event
-        if (!teleportWaypoint.activeInHierarchy && !waypointEntered)
-            teleportWaypoint.SetActive(true);
         teleportWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
 
         // Reset waypointEnter
@@ -173,9 +170,6 @@ public class DetectButtonPress : MonoBehaviour
         // Activate Continuous Move
         player.GetComponent<ActionBasedContinuousMoveProvider>().enabled = true;
 
-        // Activate Waypoint and add Listener to Trigger Event
-        if (!moveWaypoint.activeInHierarchy && !waypointEntered)
-            moveWaypoint.SetActive(true);
         moveWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
 
         // Reset waypointEnter

@@ -36,7 +36,7 @@ public class TutorioLessonController : MonoBehaviour
     // Audio Files
     // Sound effect when instruction video appears or vanishes
     [SerializeField]
-    private AudioClip videoVisibility;
+    private AudioClip hideShowVideoSound;
 
     // Sound effect when completing a lesson
     [SerializeField]
@@ -53,6 +53,9 @@ public class TutorioLessonController : MonoBehaviour
     // The animator that controls Tutorio
     private Animator animator;
 
+    // Variable to check if audio has finished playing
+    private bool audioFinished;
+
     // Event that is triggered when all conditions of the current lesson have been met
     public event Action OnLessonCompleted;
 
@@ -62,6 +65,7 @@ public class TutorioLessonController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         currentLesson = -1;
+        audioFinished = true;
 
         OnLessonCompleted += StartCongrats;
     }
@@ -79,37 +83,65 @@ public class TutorioLessonController : MonoBehaviour
         {
             if (lessons[currentLesson].getIntro() != null)
                 PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getIntro());   // Play introduction audio
-            StartCoroutine(WaitForAudio());     // Wait for audio to finish playing
-        } else
+            StartCoroutine(GiveInstructions());
+        }
+        else
         {
             PlayAudioClip(playerAudioSource, chapterCompleteAudio);
             levelChanger.GetComponent<LevelChanger>().FadeToLevel("TutorialInteraction");
         }
     }
 
-    private IEnumerator WaitForAudio()
-    {
-        yield return new WaitUntil(() => tutorioAudioSource.isPlaying == false);
-
-        // When introduction has finished playing, start playing the description video
-        PlayVideoClip();
-    }
-
     private void PlayAudioClip(AudioSource source, AudioClip clip)
     {
         if (clip == null)
-            throw new System.Exception("Missing Audio Clip!");
+            throw new Exception("Missing Audio Clip!");
         if (source == null)
-            throw new System.Exception("Missing Audio Source!");
+            throw new Exception("Missing Audio Source!");
 
         source.clip = clip;
         source.Play();
     }
 
+    private IEnumerator WaitForAudio()
+    {
+        audioFinished = false;
+
+        yield return new WaitUntil(() => tutorioAudioSource.isPlaying == false);
+
+        // Set audioFinished true
+        audioFinished = true;
+    }
+
+    private IEnumerator GiveInstructions()
+    {
+        // Wait until all conditions of current lesson have been met
+        StartCoroutine(WaitForCompletion());
+
+        // For all instruction audio clips make Tutorio look at the associated GameObject
+        foreach (var instruction in lessons[currentLesson].getInstructions())
+        {
+            StartCoroutine(WaitForAudio());     // Wait for audio to finish playing
+
+            yield return new WaitUntil(() => audioFinished);
+
+            if (instruction.instructionType == Lesson.InstructionType.Video)
+                PlayVideoClip();
+            else if (instruction.instructionType == Lesson.InstructionType.Spawn)
+                instruction.lookAtTarget.SetActive(true);
+
+            PlayAudioClip(tutorioAudioSource, instruction.audioClip);
+            StartCoroutine(WaitForAudio());
+
+            transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.lookAtTarget.transform;
+            StartCoroutine(LookAtInstruction(2));
+        }
+    }
+
     private void PlayVideoClip()
     {
         if (video == null)
-            throw new System.Exception("Missing Description Video!");
+            throw new Exception("Missing Description Video!");
 
         // Add video clip and render texture to the video player
         var videoPlayer = video.transform.GetChild(0).GetComponent<VideoPlayer>();
@@ -122,17 +154,7 @@ public class TutorioLessonController : MonoBehaviour
 
         // Activate description video
         video.SetActive(true);
-        PlayAudioClip(videoAudioSource, videoVisibility);
-
-        // Wait until all conditions of current lesson have been met
-        StartCoroutine(WaitForCompletion());
-
-        // Make Tutorio look at the video for a number of seconds to redirect attention of the Player
-        transform.GetChild(0).GetComponent<LookAtTarget>().target = video.transform;
-        StartCoroutine(LookAtInstruction(3));
-
-        // Play instruction audio
-        PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getInstructionAudio());
+        PlayAudioClip(videoAudioSource, hideShowVideoSound);
     }
 
     private IEnumerator LookAtInstruction(int sec)
@@ -150,14 +172,14 @@ public class TutorioLessonController : MonoBehaviour
         // Wait for each condition of current lesson to be completed
         foreach (var condition in lessons[currentLesson].getConditions())
         {
-            conditionComponent.SetInputDetected();
+            conditionComponent.ResetInputDetected();
             yield return new WaitUntil(() => conditionComponent.ActivateSelectedFunction(condition));
         }
         // When all conditions have been met trigger LessonCompleted
         OnLessonCompleted?.Invoke();
 
         PlayAudioClip(playerAudioSource, lessonCompleteAudio);
-        PlayAudioClip(videoAudioSource, videoVisibility);
+        PlayAudioClip(videoAudioSource, hideShowVideoSound);
     }
 
     // StartCongrats is being called, when a lesson has been completed successfully

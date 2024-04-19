@@ -2161,7 +2161,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lessons:
   - intro: {fileID: 8300000, guid: e41d6532d1723aa40ab02ae6dee7f1a6, type: 3}
-    instructionAudio: {fileID: 8300000, guid: 0a9248b5a5d0cc746b87dc8b4fd7380a, type: 3}
+    instructions:
+    - instructionType: 1
+      audioClip: {fileID: 8300000, guid: f062349154b50e448a3370a4dad7e5dd, type: 3}
+      lookAtTarget: {fileID: 5751499683552894419}
+    - instructionType: 1
+      audioClip: {fileID: 8300000, guid: 0a9248b5a5d0cc746b87dc8b4fd7380a, type: 3}
+      lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: d2e2a56b409f2904c99b6747b2629a83, type: 3}
     conditions: 00000000
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
@@ -2170,7 +2176,7 @@ MonoBehaviour:
   playerAudioSource: {fileID: 208425904}
   video: {fileID: 64289596}
   renderTexture: {fileID: 8400000, guid: 298a08347ca9ab34b8982f7e4f2fbf18, type: 2}
-  videoVisibility: {fileID: 8300000, guid: 85f7938650085944fb31722f526e6d33, type: 3}
+  hideShowVideoSound: {fileID: 0}
   lessonCompleteAudio: {fileID: 8300000, guid: 28ad8e2b086ccaf40ae00803184c6ad8, type: 3}
   chapterCompleteAudio: {fileID: 8300000, guid: 82f78d7e49d7450459c0467dd0194a13, type: 3}
   levelChanger: {fileID: 6692282718288445537}
@@ -13819,7 +13825,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5751499683552910163
 GameObject:
   m_ObjectHideFlags: 0
