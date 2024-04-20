@@ -1,24 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-using static Lesson;
+using static Types;
 
 public class DetectButtonPress : MonoBehaviour
 {
-    // Teleport Waypoint
-    public GameObject teleportWaypoint;
-
-    // Continuous Move Waypoint
-    public GameObject moveWaypoint;
-
     // XR Origin GameObject
     private GameObject player;
 
     // Dictionary that connects a FunctionOption to a specific method
-    private Dictionary<FunctionOption, Func<bool>> functionLookup;
+    private Dictionary<FunctionOption, Func<GameObject[], bool>> functionLookup;
 
     private InputDevice rightController;
 
@@ -31,7 +26,14 @@ public class DetectButtonPress : MonoBehaviour
     // Event that is triggered when all conditions of the current lesson have been met
     public event Action OnMovePosition;
 
+    // Check if player has entered a waypoint
     private bool waypointEntered;
+
+    // Check if Object has been selected
+    private bool objectSelected;
+
+    // Check if Object has been activated
+    private bool objectActivated;
 
     private IEnumerator measure;
 
@@ -47,13 +49,14 @@ public class DetectButtonPress : MonoBehaviour
             rightController = rightHandedControllers[0];
 
         // Initialize Dictionary
-        functionLookup = new Dictionary<FunctionOption, System.Func<bool>>()
+        functionLookup = new Dictionary<FunctionOption, Func<GameObject[], bool>>()
         {
             { FunctionOption.A_ButtonPress, DetectA_Button },
             { FunctionOption.RotateLeft, DetectRotationLeft },
             { FunctionOption.RotateRight, DetectRotationRight },
             { FunctionOption.Teleport, DetectTeleport },
-            { FunctionOption.ContinuousMove, DetectContinuousMove }
+            { FunctionOption.ContinuousMove, DetectContinuousMove },
+            { FunctionOption.SelectObject, DetectObjectSelection }
         };
 
         // Find XR Origin GameObject
@@ -61,6 +64,8 @@ public class DetectButtonPress : MonoBehaviour
 
         coroutineStarted = false;
         waypointEntered = false;
+        objectSelected = false;
+        objectActivated = false;
     }
 
     public void ResetInputDetected()
@@ -69,13 +74,13 @@ public class DetectButtonPress : MonoBehaviour
     }
 
     // ActivateSelectedFunction is called to call a selected function
-    public bool ActivateSelectedFunction(FunctionOption selectedFunction)
+    public bool ActivateSelectedFunction(Condition condition)
     {
-        return functionLookup[selectedFunction].Invoke();
+        return functionLookup[condition.selectedFunction].Invoke(condition.parameters);
     }
 
     // A_ButtonPress detects wether the A-Button has been pressed
-    private bool DetectA_Button()
+    private bool DetectA_Button(GameObject[] param)
     {
         // Check if A-Button is being pressed
         rightController.TryGetFeatureValue(CommonUsages.primaryButton, out inputDetected);
@@ -86,7 +91,7 @@ public class DetectButtonPress : MonoBehaviour
         return inputDetected;
     }
 
-    private bool DetectRotationLeft()
+    private bool DetectRotationLeft(GameObject[] param)
     {
         Vector2 thumbStickValue;
 
@@ -114,7 +119,7 @@ public class DetectButtonPress : MonoBehaviour
         return inputDetected;
     }
 
-    private bool DetectRotationRight()
+    private bool DetectRotationRight(GameObject[] param)
     {
         Vector2 thumbStickValue;
 
@@ -145,42 +150,58 @@ public class DetectButtonPress : MonoBehaviour
         return inputDetected;
     }
 
-    private bool DetectTeleport()
+    private bool DetectTeleport(GameObject[] param)
     {
         // Activate teleportation functionality
         player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
-        teleportWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
+        // Subscribe method to player enter event
+        param.First().GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
 
         // Reset waypointEnter
-        bool entered = waypointEntered;
+        bool returnValue = waypointEntered;
         waypointEntered = false;
 
         // Invoke event to move Tutorio
-        if (entered)
+        if (returnValue)
             OnMovePosition?.Invoke();
 
-        return entered;
+        return returnValue;
     }
 
-    private bool DetectContinuousMove()
+    private bool DetectContinuousMove(GameObject[] param)
     {
         // Deactivate Teleportation
         player.GetComponent<ActivateTeleportationRay>().enabled = false;
         // Activate Continuous Move
         player.GetComponent<ActionBasedContinuousMoveProvider>().enabled = true;
 
-        moveWaypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
+        // Subscribe method to player enter event
+        param.First().GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
 
         // Reset waypointEnter
-        bool entered = waypointEntered;
+        bool returnValue = waypointEntered;
         waypointEntered = false;
 
         // Invoke event to move Tutorio
-        if (entered)
+        if (returnValue)
             OnMovePosition?.Invoke();
 
-        return entered;
+        return returnValue;
+    }
+
+    private bool DetectObjectSelection(GameObject[] param)
+    {
+        if (param == null || !param.Any())
+            throw new Exception("param must contain one element!");
+
+        param.First().GetComponent<XRGrabInteractable>().selectEntered.AddListener((SelectEnterEventArgs) => { objectSelected = true; });
+
+        // Reset objectSelected
+        bool returnValue = objectSelected;
+        objectSelected = false;
+
+        return returnValue;
     }
 
     private IEnumerator MeasureTime(float time)

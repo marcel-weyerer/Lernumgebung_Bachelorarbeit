@@ -275,15 +275,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64289596}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: -1.3549, y: 1.002, z: 1.256}
-  m_LocalScale: {x: 1.45, y: 1.45, z: 1.45}
-  m_ConstrainProportionsScale: 1
+  m_LocalRotation: {x: 0.27059805, y: -0.27059805, z: -0.6532815, w: 0.6532815}
+  m_LocalPosition: {x: -0.00099, y: -0, z: 0.01002}
+  m_LocalScale: {x: 0.0145, y: 0.0145, z: 0.014500001}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1940233182}
   - {fileID: 593190062}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+  m_Father: {fileID: 1711466727544634625}
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: -90}
 --- !u!1 &208425902
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,8 +2288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963cc71b2f5f2b2418e2ab551fd86754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportWaypoint: {fileID: 1606517890}
-  moveWaypoint: {fileID: 1331470288}
 --- !u!114 &1442074782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2309,7 +2307,9 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: aefcd3b640b1e2840a6aaa2d4b6e116e, type: 3}
       lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: 57d380adab30cfd4a95f903bd724f6af, type: 3}
-    conditions: 00000000
+    conditions:
+    - selectedFunction: 0
+      parameters: []
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 6cab1c45d07141a4ab4ce39fe137ef9e, type: 3}
     instructions:
@@ -2317,7 +2317,9 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: 307994a05ef43e74ca29f3d1e196df35, type: 3}
       lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: 7e70e5225d1e9ce4bbfccf983e97f7ea, type: 3}
-    conditions: 01000000
+    conditions:
+    - selectedFunction: 1
+      parameters: []
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 0}
     instructions:
@@ -2325,7 +2327,9 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: 2794ae12c2f15ff4ea13ac70934cee80, type: 3}
       lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: 7e70e5225d1e9ce4bbfccf983e97f7ea, type: 3}
-    conditions: 02000000
+    conditions:
+    - selectedFunction: 2
+      parameters: []
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 8fbee0057069edc4eb4031d4ec306f79, type: 3}
     instructions:
@@ -2336,7 +2340,10 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: 66019ed8ac07e7f44bba91f2b0416665, type: 3}
       lookAtTarget: {fileID: 1606517890}
     instructionVideo: {fileID: 32900000, guid: 9a9bc26afb81845469d06134b9953f88, type: 3}
-    conditions: 03000000
+    conditions:
+    - selectedFunction: 3
+      parameters:
+      - {fileID: 1606517890}
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 811962d6e8f2de64090dda07187ec01c, type: 3}
     instructions:
@@ -2347,7 +2354,10 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: 32d097f98daf6e74aab10a4d0f758b76, type: 3}
       lookAtTarget: {fileID: 1331470288}
     instructionVideo: {fileID: 32900000, guid: 5c6e4123dca776a49a740b599f78ab4f, type: 3}
-    conditions: 04000000
+    conditions:
+    - selectedFunction: 4
+      parameters:
+      - {fileID: 1331470288}
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   tutorioAudioSource: {fileID: 59765248}
   videoAudioSource: {fileID: 795469069}
@@ -7082,6 +7092,7 @@ Transform:
   - {fileID: 825767875395616243}
   - {fileID: 8112578795986899026}
   - {fileID: 7986492498204093552}
+  - {fileID: 64289597}
   m_Father: {fileID: 6720159644888966052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1716529685460492370
@@ -15224,8 +15235,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6199518501447006494}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -9.005332, y: 0.13002092, z: -32.270256}
+  m_LocalRotation: {x: 0, y: 0.8433915, z: 0, w: 0.53729963}
+  m_LocalPosition: {x: -9.155, y: 0.13002092, z: -32.303}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15271,7 +15282,7 @@ Transform:
   - {fileID: 1711466727544634625}
   - {fileID: 795469070}
   m_Father: {fileID: 470333540}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 115, z: 0}
 --- !u!33 &6720930905817186349
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -19654,5 +19665,4 @@ SceneRoots:
   - {fileID: 652013338}
   - {fileID: 1849440781}
   - {fileID: 470333540}
-  - {fileID: 64289597}
   - {fileID: 1442074780}

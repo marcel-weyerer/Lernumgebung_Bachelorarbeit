@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using static Types;
 
 public class TutorioLessonController : MonoBehaviour
 {
@@ -125,9 +126,9 @@ public class TutorioLessonController : MonoBehaviour
 
             yield return new WaitUntil(() => audioFinished);
 
-            if (instruction.instructionType == Lesson.InstructionType.Video)
+            if (instruction.instructionType == InstructionType.Video)
                 PlayVideoClip();
-            else if (instruction.instructionType == Lesson.InstructionType.Spawn)
+            else if (instruction.instructionType == InstructionType.Spawn)
                 instruction.lookAtTarget.SetActive(true);
 
             PlayAudioClip(tutorioAudioSource, instruction.audioClip);

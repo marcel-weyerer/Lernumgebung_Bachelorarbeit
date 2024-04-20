@@ -1,29 +1,10 @@
 using UnityEngine;
 using UnityEngine.Video;
+using static Types;
 
 [System.Serializable]
 public class Lesson
 {
-    [System.Serializable]
-    public struct Instruction
-    {
-        public InstructionType instructionType;
-        public AudioClip audioClip;
-        public GameObject lookAtTarget;
-    }
-
-    public enum InstructionType { Video, Spawn }
-
-    // Enum for all available Functions for the conditions
-    public enum FunctionOption
-    {
-        A_ButtonPress,
-        RotateLeft,
-        RotateRight,
-        Teleport,
-        ContinuousMove
-    };
-
     // Introduction to the new lesson. What is the lesson about?
     [SerializeField]
     private AudioClip intro;
@@ -39,7 +20,7 @@ public class Lesson
 
     // Conditions that need to be met to complete the lesson
     [SerializeField]
-    private FunctionOption[] conditions;
+    private Condition[] conditions;
 
     // Audio that is being played when Lesson is completed
     [SerializeField]
@@ -60,7 +41,7 @@ public class Lesson
         return instructionVideo;
     }
 
-    public FunctionOption[] getConditions()
+    public Condition[] getConditions()
     {
         return conditions;
     }

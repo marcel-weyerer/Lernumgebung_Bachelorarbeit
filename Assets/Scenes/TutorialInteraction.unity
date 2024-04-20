@@ -1769,7 +1769,7 @@ Transform:
   m_GameObject: {fileID: 1385257417}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2.914}
+  m_LocalPosition: {x: 0, y: 0, z: -2.693}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2106,7 +2106,7 @@ Animator:
   m_GameObject: {fileID: 1442074778}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6f98e699aac3fc84282ab0728037d9f9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1673ef2d93550404fa6066b3b402e320, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2126,7 +2126,7 @@ Transform:
   m_GameObject: {fileID: 1442074778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 1.458, z: 2}
+  m_LocalPosition: {x: 0.53, y: 1.38, z: 1.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2145,8 +2145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963cc71b2f5f2b2418e2ab551fd86754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportWaypoint: {fileID: 0}
-  moveWaypoint: {fileID: 0}
 --- !u!114 &1442074782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2165,18 +2163,21 @@ MonoBehaviour:
     - instructionType: 1
       audioClip: {fileID: 8300000, guid: f062349154b50e448a3370a4dad7e5dd, type: 3}
       lookAtTarget: {fileID: 5751499683552894419}
-    - instructionType: 1
+    - instructionType: 0
       audioClip: {fileID: 8300000, guid: 0a9248b5a5d0cc746b87dc8b4fd7380a, type: 3}
       lookAtTarget: {fileID: 64289596}
     instructionVideo: {fileID: 32900000, guid: d2e2a56b409f2904c99b6747b2629a83, type: 3}
-    conditions: 00000000
+    conditions:
+    - selectedFunction: 5
+      parameters:
+      - {fileID: 5751499683552894419}
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   tutorioAudioSource: {fileID: 59765248}
   videoAudioSource: {fileID: 795469069}
   playerAudioSource: {fileID: 208425904}
   video: {fileID: 64289596}
   renderTexture: {fileID: 8400000, guid: 298a08347ca9ab34b8982f7e4f2fbf18, type: 2}
-  hideShowVideoSound: {fileID: 0}
+  hideShowVideoSound: {fileID: 8300000, guid: 85f7938650085944fb31722f526e6d33, type: 3}
   lessonCompleteAudio: {fileID: 8300000, guid: 28ad8e2b086ccaf40ae00803184c6ad8, type: 3}
   chapterCompleteAudio: {fileID: 8300000, guid: 82f78d7e49d7450459c0467dd0194a13, type: 3}
   levelChanger: {fileID: 6692282718288445537}
@@ -4113,7 +4114,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071767395}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2185d45442275444e9cd7fade79ae8b4, type: 3}
   m_Name: 
@@ -15620,8 +15621,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6199518501447006494}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -9.005332, y: 0.13002092, z: -32.270256}
+  m_LocalRotation: {x: -0, y: 0.8433915, z: -0, w: 0.53729963}
+  m_LocalPosition: {x: -9.155, y: 0.13002092, z: -32.303}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
