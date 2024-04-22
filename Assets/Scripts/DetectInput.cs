@@ -56,7 +56,8 @@ public class DetectButtonPress : MonoBehaviour
             { FunctionOption.RotateRight, DetectRotationRight },
             { FunctionOption.Teleport, DetectTeleport },
             { FunctionOption.ContinuousMove, DetectContinuousMove },
-            { FunctionOption.SelectObject, DetectObjectSelection }
+            { FunctionOption.SelectObject, DetectObjectSelection },
+            { FunctionOption.RaySelect, DetectRayObjectSelection }
         };
 
         // Find XR Origin GameObject
@@ -202,6 +203,14 @@ public class DetectButtonPress : MonoBehaviour
         objectSelected = false;
 
         return returnValue;
+    }
+
+    private bool DetectRayObjectSelection(GameObject[] param)
+    {
+        if (param == null || !param.Any())
+            throw new Exception("param must contain one element!");
+
+        return DetectObjectSelection(param);
     }
 
     private IEnumerator MeasureTime(float time)

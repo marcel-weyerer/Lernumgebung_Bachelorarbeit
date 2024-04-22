@@ -7,13 +7,12 @@ using static Types;
 
 public class TutorioLessonController : MonoBehaviour
 {
+    [Header("Lessons")]
     // A list of lessons in this learning unity
     [SerializeField]
     private Lesson[] lessons;
 
-    // Index of the current lesson in lessons
-    private int currentLesson;
-
+    [Header("Audio Sources")]
     // AudioSource of Tutorio
     [SerializeField]
     private AudioSource tutorioAudioSource;
@@ -26,15 +25,7 @@ public class TutorioLessonController : MonoBehaviour
     [SerializeField]
     private AudioSource playerAudioSource;
 
-    // GameObject used for playing description video
-    [SerializeField]
-    private GameObject video;
-
-    // Render Texture necessary for playing the instruction video
-    [SerializeField]
-    private RenderTexture renderTexture;
-
-    // Audio Files
+    [Header("Audio Clips")]
     // Sound effect when instruction video appears or vanishes
     [SerializeField]
     private AudioClip hideShowVideoSound;
@@ -47,9 +38,22 @@ public class TutorioLessonController : MonoBehaviour
     [SerializeField]
     private AudioClip chapterCompleteAudio;
 
+    [Header("Video Player")]
+    // GameObject used for playing description video
+    [SerializeField]
+    private GameObject video;
+
+    // Render Texture necessary for playing the instruction video
+    [SerializeField]
+    private RenderTexture renderTexture;
+
+    [Header("Level Changer")]
     // GameObject to transition to next scene
     [SerializeField]
     private GameObject levelChanger;
+
+    // Index of the current lesson in lessons
+    private int currentLesson;
 
     // The animator that controls Tutorio
     private Animator animator;

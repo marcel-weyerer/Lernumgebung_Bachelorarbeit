@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LayerNames:
   - Default
-  - Direct Interaction
   - 
   - 
   - 
@@ -22,7 +21,8 @@ MonoBehaviour:
   - 
   - 
   - 
-  - 
+  - Right Direct Interaction
+  - Right Ray Interaction
   - 
   - 
   - 

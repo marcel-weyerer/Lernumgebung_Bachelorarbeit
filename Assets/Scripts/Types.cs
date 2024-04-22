@@ -28,7 +28,8 @@ public static class Types
         RotateRight,
         Teleport,
         ContinuousMove,
-        SelectObject
+        SelectObject,
+        RaySelect
     };
 
     // The type of a condition
