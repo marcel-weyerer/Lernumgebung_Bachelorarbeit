@@ -7,8 +7,10 @@ public static class Types
     // Type that determines the action executed with an instruction
     public enum InstructionType
     {
+        LookAt,
         Video,
-        Spawn
+        Spawn,
+        MoveObject
     }
 
     // The type of an instruction
@@ -18,6 +20,7 @@ public static class Types
         public InstructionType instructionType;
         public AudioClip audioClip;
         public GameObject lookAtTarget;
+        public Vector3 optPosition;     // ToDo: only show when instructionType == MoveObject (custom inspector)
     }
 
     // Enum for all available Functions for the conditions
@@ -29,7 +32,8 @@ public static class Types
         Teleport,
         ContinuousMove,
         SelectObject,
-        RaySelect
+        RaySelect,
+        Activate
     };
 
     // The type of a condition

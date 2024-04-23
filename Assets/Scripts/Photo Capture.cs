@@ -95,6 +95,6 @@ public class PhotoCapture : MonoBehaviour
         Sprite photoSprite = Sprite.Create(renderResult, new Rect(0, 0, renderResult.width, renderResult.height), new Vector2(0.5f, 0.5f), 100f);
         photoDisplayArea.sprite = photoSprite;
 
-        photo.GetComponent<Animator>().Play("Photo_Fade_In");
+        photo.GetComponent<Animator>().SetTrigger("StartFade");
     }
 }

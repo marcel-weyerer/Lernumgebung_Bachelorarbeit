@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.XR.Interaction.Toolkit;
 using static Types;
 
 public class TutorioLessonController : MonoBehaviour
@@ -130,10 +131,20 @@ public class TutorioLessonController : MonoBehaviour
 
             yield return new WaitUntil(() => audioFinished);
 
-            if (instruction.instructionType == InstructionType.Video)
-                PlayVideoClip();
-            else if (instruction.instructionType == InstructionType.Spawn)
-                instruction.lookAtTarget.SetActive(true);
+            switch (instruction.instructionType)
+            {
+                case InstructionType.Video:
+                    PlayVideoClip();
+                    break;
+                case InstructionType.Spawn:
+                    instruction.lookAtTarget.SetActive(true);
+                    break;
+                case InstructionType.MoveObject:
+                    MoveObject(instruction.lookAtTarget, instruction.optPosition);
+                    break;
+                default:
+                    break;
+            }
 
             PlayAudioClip(tutorioAudioSource, instruction.audioClip);
             StartCoroutine(WaitForAudio());
@@ -198,5 +209,21 @@ public class TutorioLessonController : MonoBehaviour
 
         // Play Audio Congratulation
         PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getCongratulation());
+    }
+
+    private void MoveObject(GameObject obj, Vector3 position)
+    {
+        var interactable = obj.GetComponent<XRGrabInteractable>();
+
+        if (interactable == null)
+            return;
+
+        // Deactivate Select
+        interactable.enabled = false;
+
+        obj.transform.position = position;
+
+        // Activate Select
+        interactable.enabled = true;
     }
 }

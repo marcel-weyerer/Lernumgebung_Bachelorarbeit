@@ -57,7 +57,8 @@ public class DetectButtonPress : MonoBehaviour
             { FunctionOption.Teleport, DetectTeleport },
             { FunctionOption.ContinuousMove, DetectContinuousMove },
             { FunctionOption.SelectObject, DetectObjectSelection },
-            { FunctionOption.RaySelect, DetectRayObjectSelection }
+            { FunctionOption.RaySelect, DetectRayObjectSelection },
+            { FunctionOption.Activate, DetectObjectActivate }
         };
 
         // Find XR Origin GameObject
@@ -207,10 +208,28 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectRayObjectSelection(GameObject[] param)
     {
+        if (param == null || param.Length < 2)
+            throw new Exception("param must contain one element!");
+
+        param[1].SetActive(true);
+
+        return DetectObjectSelection(param);
+    }
+
+    private bool DetectObjectActivate(GameObject[] param)
+    {
         if (param == null || !param.Any())
             throw new Exception("param must contain one element!");
 
-        return DetectObjectSelection(param);
+        // ToDo: Activate Activation
+
+        param.First().GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { objectActivated = true; });
+
+        // Reset objectActivated
+        bool returnValue = objectActivated;
+        objectActivated = false;
+
+        return returnValue;
     }
 
     private IEnumerator MeasureTime(float time)
