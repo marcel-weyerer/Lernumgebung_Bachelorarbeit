@@ -2376,6 +2376,7 @@ MonoBehaviour:
   video: {fileID: 64289596}
   renderTexture: {fileID: 8400000, guid: 298a08347ca9ab34b8982f7e4f2fbf18, type: 2}
   levelChanger: {fileID: 4295094369381230817}
+  nextScene: TutorialInteraction
 --- !u!1 &1494824330
 GameObject:
   m_ObjectHideFlags: 0

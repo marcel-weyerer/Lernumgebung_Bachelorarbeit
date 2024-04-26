@@ -70,9 +70,12 @@ public class DetectButtonPress : MonoBehaviour
         objectActivated = false;
     }
 
-    public void ResetInputDetected()
+    public void ResetInput()
     {
         inputDetected = false;
+        waypointEntered = false;
+        objectSelected = false;
+        objectActivated = false;
     }
 
     // ActivateSelectedFunction is called to call a selected function
@@ -87,6 +90,7 @@ public class DetectButtonPress : MonoBehaviour
         // Check if A-Button is being pressed
         rightController.TryGetFeatureValue(CommonUsages.primaryButton, out inputDetected);
 
+        // Haptic Impule on completion
         if (inputDetected)
             rightController.SendHapticImpulse(2, 0.3f);
 
@@ -95,58 +99,60 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectRotationLeft(GameObject[] param)
     {
-        Vector2 thumbStickValue;
-
-        // Activate rotation functionality
-        player.GetComponent<ActionBasedContinuousTurnProvider>().enabled = true;
-
-        // Start Measuring Time until we have waited long enough or until Player has stopped rotating
-        if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.x <= -0.5f)) {
-            if (!coroutineStarted)
-            {
-                measure = MeasureTime(2f);
-                StartCoroutine(measure);
-            }
-        } else {
-            if (measure != null)
-                StopCoroutine(measure);
-            coroutineStarted= false;
-        }
-
-        // Invoke event to move Tutorio
-        if (inputDetected)
-            OnMovePosition?.Invoke();
-
-        // Will only be true when the Player has rotated for long enough
-        return inputDetected;
+        return DetectRotation(-0.5f);
     }
 
     private bool DetectRotationRight(GameObject[] param)
     {
-        Vector2 thumbStickValue;
+        return DetectRotation(0.5f);
+    }
 
+    private bool DetectRotation(float stickValue)
+    {
         // Activate rotation functionality
         player.GetComponent<ActionBasedContinuousTurnProvider>().enabled = true;
 
         // Start Measuring Time until we have waited long enough or until Player has stopped rotating
-        if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.x >= 0.5f))
+        if (stickValue < 0)
         {
-            if (!coroutineStarted)
+            if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out Vector2 thumbStickValue) && (thumbStickValue.x <= stickValue))
             {
-                measure = MeasureTime(2f);
-                StartCoroutine(measure);
+                if (!coroutineStarted)
+                {
+                    measure = MeasureTime(2f);
+                    StartCoroutine(measure);
+                }
             }
-        }
-        else
+            else
+            {
+                if (measure != null)
+                    StopCoroutine(measure);
+                coroutineStarted = false;
+            }
+        } else
         {
-            if (measure != null)
-                StopCoroutine(measure);
-            coroutineStarted = false;
+            if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out Vector2 thumbStickValue) && (thumbStickValue.x >= stickValue))
+            {
+                if (!coroutineStarted)
+                {
+                    measure = MeasureTime(2f);
+                    StartCoroutine(measure);
+                }
+            }
+            else
+            {
+                if (measure != null)
+                    StopCoroutine(measure);
+                coroutineStarted = false;
+            }
         }
 
         // Invoke event to move Tutorio
         if (inputDetected)
+        {
             OnMovePosition?.Invoke();
+            rightController.SendHapticImpulse(2, 0.3f);
+        }
 
         // Will only be true when the Player has rotated for long enough
         return inputDetected;
@@ -154,42 +160,41 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectTeleport(GameObject[] param)
     {
+        if (param == null || !param.Any())
+            throw new Exception("param must contain one element!");
+
         // Activate teleportation functionality
         player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
-        // Subscribe method to player enter event
-        param.First().GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
-
-        // Reset waypointEnter
-        bool returnValue = waypointEntered;
-        waypointEntered = false;
-
-        // Invoke event to move Tutorio
-        if (returnValue)
-            OnMovePosition?.Invoke();
-
-        return returnValue;
+        return DetectWaypointEnter(param.First());
     }
 
     private bool DetectContinuousMove(GameObject[] param)
     {
+        if (param == null || !param.Any())
+            throw new Exception("param must contain one element!");
+
         // Deactivate Teleportation
         player.GetComponent<ActivateTeleportationRay>().enabled = false;
         // Activate Continuous Move
         player.GetComponent<ActionBasedContinuousMoveProvider>().enabled = true;
 
-        // Subscribe method to player enter event
-        param.First().GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
+        return DetectWaypointEnter(param.First());
+    }
 
-        // Reset waypointEnter
-        bool returnValue = waypointEntered;
-        waypointEntered = false;
+    private bool DetectWaypointEnter(GameObject param)
+    {
+        // Subscribe method to player enter event
+        param.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
 
         // Invoke event to move Tutorio
-        if (returnValue)
+        if (waypointEntered)
+        {
             OnMovePosition?.Invoke();
+            rightController.SendHapticImpulse(2, 0.3f);
+        }
 
-        return returnValue;
+        return waypointEntered;
     }
 
     private bool DetectObjectSelection(GameObject[] param)
@@ -199,11 +204,11 @@ public class DetectButtonPress : MonoBehaviour
 
         param.First().GetComponent<XRGrabInteractable>().selectEntered.AddListener((SelectEnterEventArgs) => { objectSelected = true; });
 
-        // Reset objectSelected
-        bool returnValue = objectSelected;
-        objectSelected = false;
+        // Haptic Impule on completion
+        if (objectSelected)
+            rightController.SendHapticImpulse(2, 0.3f);
 
-        return returnValue;
+        return objectSelected;
     }
 
     private bool DetectRayObjectSelection(GameObject[] param)
@@ -225,11 +230,11 @@ public class DetectButtonPress : MonoBehaviour
 
         param.First().GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { objectActivated = true; });
 
-        // Reset objectActivated
-        bool returnValue = objectActivated;
-        objectActivated = false;
+        // Haptic Impule on completion
+        if (objectActivated)
+            rightController.SendHapticImpulse(2, 0.3f);
 
-        return returnValue;
+        return objectActivated;
     }
 
     private IEnumerator MeasureTime(float time)

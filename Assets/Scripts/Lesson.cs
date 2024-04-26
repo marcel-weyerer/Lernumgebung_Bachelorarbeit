@@ -26,27 +26,27 @@ public class Lesson
     [SerializeField]
     private AudioClip congratulation;
 
-    public AudioClip getIntro()
+    public AudioClip GetIntro()
     {
         return intro;
     }
 
-    public Instruction[] getInstructions()
+    public Instruction[] GetInstructions()
     {
         return instructions;
     }
 
-    public VideoClip getInstructionVideo()
+    public VideoClip GetInstructionVideo()
     {
         return instructionVideo;
     }
 
-    public Condition[] getConditions()
+    public Condition[] GetConditions()
     {
         return conditions;
     }
     
-    public AudioClip getCongratulation()
+    public AudioClip GetCongratulation()
     {
         return congratulation;
     }

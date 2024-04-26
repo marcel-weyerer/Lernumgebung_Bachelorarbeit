@@ -24,10 +24,8 @@ public class ActivateTeleportationRay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 thumbStickValue;
-
         // Enable Teleportation Ray when thumb Stick is moved foreward enough
-        if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out thumbStickValue) && (thumbStickValue.y >= 0.5f))
+        if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out Vector2 thumbStickValue) && (thumbStickValue.y >= 0.5f))
             rightTeleportationRay.SetActive(true);
         else
             rightTeleportationRay.SetActive(false);

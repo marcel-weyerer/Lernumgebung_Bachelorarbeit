@@ -53,6 +53,10 @@ public class TutorioLessonController : MonoBehaviour
     [SerializeField]
     private GameObject levelChanger;
 
+    // Scene to load after this one
+    [SerializeField]
+    private string nextScene;
+
     // Index of the current lesson in lessons
     private int currentLesson;
 
@@ -78,23 +82,26 @@ public class TutorioLessonController : MonoBehaviour
 
     public void StartHoverAnim()
     {
+        // Reset all coroutines
+        StopAllCoroutines();
+
         // Starting Hover Animation
         animator.SetTrigger("StartHover");
 
         currentLesson++;
 
         // While there are still lessons to do, continue
-        // Else, return to Level Menu
+        // Else load next scene
         if (currentLesson < lessons.Length)
         {
-            if (lessons[currentLesson].getIntro() != null)
-                PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getIntro());   // Play introduction audio
+            if (lessons[currentLesson].GetIntro() != null)
+                PlayAudioClip(tutorioAudioSource, lessons[currentLesson].GetIntro());   // Play introduction audio
             StartCoroutine(GiveInstructions());
         }
         else
         {
             PlayAudioClip(playerAudioSource, chapterCompleteAudio);
-            levelChanger.GetComponent<LevelChanger>().FadeToLevel("TutorialInteraction");
+            levelChanger.GetComponent<LevelChanger>().FadeToLevel(nextScene);
         }
     }
 
@@ -125,7 +132,7 @@ public class TutorioLessonController : MonoBehaviour
         StartCoroutine(WaitForCompletion());
 
         // For all instruction audio clips make Tutorio look at the associated GameObject
-        foreach (var instruction in lessons[currentLesson].getInstructions())
+        foreach (var instruction in lessons[currentLesson].GetInstructions())
         {
             StartCoroutine(WaitForAudio());     // Wait for audio to finish playing
 
@@ -150,7 +157,7 @@ public class TutorioLessonController : MonoBehaviour
             StartCoroutine(WaitForAudio());
 
             transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.lookAtTarget.transform;
-            StartCoroutine(LookAtInstruction(2));
+            StartCoroutine(LookBackAtPlayer(2));
         }
     }
 
@@ -161,19 +168,18 @@ public class TutorioLessonController : MonoBehaviour
 
         // Add video clip and render texture to the video player
         var videoPlayer = video.transform.GetChild(0).GetComponent<VideoPlayer>();
-        videoPlayer.clip = lessons[currentLesson].getInstructionVideo();
+        videoPlayer.clip = lessons[currentLesson].GetInstructionVideo();
         videoPlayer.targetTexture = renderTexture;
 
         // Add render texture to rawImage
-        var rawImage = video.gameObject.transform.GetChild(1).GetChild(0).GetComponent<RawImage>();
+        var rawImage = video.transform.GetChild(1).GetChild(0).GetComponent<RawImage>();
         rawImage.texture = renderTexture;
 
-        // Activate description video
         video.SetActive(true);
         PlayAudioClip(videoAudioSource, hideShowVideoSound);
     }
 
-    private IEnumerator LookAtInstruction(int sec)
+    private IEnumerator LookBackAtPlayer(int sec)
     {
         yield return new WaitForSeconds(sec);
 
@@ -186,9 +192,9 @@ public class TutorioLessonController : MonoBehaviour
         var conditionComponent = GetComponent<DetectButtonPress>();
 
         // Wait for each condition of current lesson to be completed
-        foreach (var condition in lessons[currentLesson].getConditions())
+        foreach (var condition in lessons[currentLesson].GetConditions())
         {
-            conditionComponent.ResetInputDetected();
+            conditionComponent.ResetInput();
             yield return new WaitUntil(() => conditionComponent.ActivateSelectedFunction(condition));
         }
         // When all conditions have been met trigger LessonCompleted
@@ -208,7 +214,7 @@ public class TutorioLessonController : MonoBehaviour
         video.SetActive(false);
 
         // Play Audio Congratulation
-        PlayAudioClip(tutorioAudioSource, lessons[currentLesson].getCongratulation());
+        PlayAudioClip(tutorioAudioSource, lessons[currentLesson].GetCongratulation());
     }
 
     private void MoveObject(GameObject obj, Vector3 position)
@@ -218,12 +224,12 @@ public class TutorioLessonController : MonoBehaviour
         if (interactable == null)
             return;
 
-        // Deactivate Select
+        // Deactivate interactable component while moving the object
         interactable.enabled = false;
 
         obj.transform.position = position;
 
-        // Activate Select
+        // Activate interactable component
         interactable.enabled = true;
     }
 }

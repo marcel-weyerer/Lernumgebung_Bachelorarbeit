@@ -48,17 +48,12 @@ public class PhotoCapture : MonoBehaviour
     {
         takePhoto = true;
 
+        // Enable processing intensive camera
+        photoCamera.gameObject.SetActive(true);
+
         source.clip = clip;
         source.Play();
     }
-
-    /*private void StartPictureCapture()
-    {
-        takePhoto = true;
-
-        source.clip = clip;
-        source.Play();
-    }*/
 
     private IEnumerator CapturePhoto()
     {
@@ -85,6 +80,9 @@ public class PhotoCapture : MonoBehaviour
         RenderTexture.ReleaseTemporary(renderTexture);
         RenderTexture.active = null;
         photoCamera.targetTexture = currentTexture;
+
+        // Disable processing intensive camera
+        photoCamera.gameObject.SetActive(false);
 
         ShowPhoto();
     }

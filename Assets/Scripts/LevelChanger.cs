@@ -14,7 +14,7 @@ public class LevelChanger : MonoBehaviour
 
     public void FadeToLevel(string levelName)
     {
-        Debug.Log("Setting Trigger");
+        // Fade out view before switching scene
         levelToLoad = levelName;
         animator.SetTrigger("FadeOut");
     }
