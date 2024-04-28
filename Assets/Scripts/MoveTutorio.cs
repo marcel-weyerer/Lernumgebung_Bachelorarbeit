@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class MoveToView : MonoBehaviour
 {
-    public Transform Player;
-
     // Rotation speed when turning towards target
     [Range(0f, 1f)]
     public float moveSpeed;
@@ -12,6 +10,7 @@ public class MoveToView : MonoBehaviour
     // List of positions that Tutorio will move to on specific events
     [SerializeField]
     private Vector3[] positions;
+
     private int currentposition;
 
     void Start()

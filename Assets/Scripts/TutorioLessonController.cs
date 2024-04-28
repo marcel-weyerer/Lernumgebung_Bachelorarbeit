@@ -128,9 +128,6 @@ public class TutorioLessonController : MonoBehaviour
 
     private IEnumerator GiveInstructions()
     {
-        // Wait until all conditions of current lesson have been met
-        StartCoroutine(WaitForCompletion());
-
         // For all instruction audio clips make Tutorio look at the associated GameObject
         foreach (var instruction in lessons[currentLesson].GetInstructions())
         {
@@ -159,6 +156,9 @@ public class TutorioLessonController : MonoBehaviour
             transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.lookAtTarget.transform;
             StartCoroutine(LookBackAtPlayer(2));
         }
+
+        // Wait until all conditions of current lesson have been met
+        StartCoroutine(WaitForCompletion());
     }
 
     private void PlayVideoClip()

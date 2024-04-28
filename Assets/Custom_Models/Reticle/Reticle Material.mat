@@ -38,9 +38,9 @@ Material:
     - _BUILTIN_ZTest: 4
     - _BUILTIN_ZWrite: 0
     - _BUILTIN_ZWriteControl: 0
-    - _Blend_Height: 0.36
+    - _Blend_Height: 0.019
     m_Colors:
-    - _Bottom_Color: {r: 1, g: 0.6212749, b: 0.4292453, a: 0.59607846}
+    - _Bottom_Color: {r: 1, g: 0.6212749, b: 0.4292453, a: 0.50980395}
     - _Top_Color: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6964500605790554604
