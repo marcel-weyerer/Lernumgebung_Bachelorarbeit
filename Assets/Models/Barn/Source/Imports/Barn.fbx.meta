@@ -1,0 +1,141 @@
+fileFormatVersion: 2
+guid: 8a89a00ebb2f26b40985e73a6ea9512f
+timeCreated: 1454239982
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Barndoor1
+    100004: Barndoor2
+    100006: Barn_Doorprop_LP
+    100008: Barn_Red
+    100010: Column1
+    100012: Column2
+    100014: Column3
+    100016: Column4
+    100018: Column5
+    100020: Column6
+    100022: Column7
+    100024: Column8
+    100026: Object008
+    400000: //RootNode
+    400002: Barndoor1
+    400004: Barndoor2
+    400006: Barn_Doorprop_LP
+    400008: Barn_Red
+    400010: Column1
+    400012: Column2
+    400014: Column3
+    400016: Column4
+    400018: Column5
+    400020: Column6
+    400022: Column7
+    400024: Column8
+    400026: Object008
+    2300000: //RootNode
+    2300002: Barndoor1
+    2300004: Barndoor2
+    2300006: Barn_Doorprop_LP
+    2300008: Barn_Red
+    2300010: Column1
+    2300012: Column2
+    2300014: Column3
+    2300016: Column4
+    2300018: Column5
+    2300020: Column6
+    2300022: Column7
+    2300024: Column8
+    2300026: Object008
+    3300000: //RootNode
+    3300002: Barndoor1
+    3300004: Barndoor2
+    3300006: Barn_Doorprop_LP
+    3300008: Barn_Red
+    3300010: Column1
+    3300012: Column2
+    3300014: Column3
+    3300016: Column4
+    3300018: Column5
+    3300020: Column6
+    3300022: Column7
+    3300024: Column8
+    3300026: Object008
+    4300000: Barn
+    4300002: Barndoor2
+    4300004: Barndoor1
+    4300006: Barn_Red
+    4300008: Barn_Doorprop_LP
+    4300010: Column1
+    4300012: Column2
+    4300014: Column3
+    4300016: Column4
+    4300018: Column5
+    4300020: Column6
+    4300022: Column7
+    4300024: Column8
+    4300026: Object008
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
