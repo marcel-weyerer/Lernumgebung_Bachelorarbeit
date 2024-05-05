@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -20,9 +21,6 @@ public class DetectButtonPress : MonoBehaviour
     // Variable to check if a specific Input has been made
     private bool inputDetected;
 
-    // Variable to check if couroutine is currently running
-    private bool coroutineStarted;
-
     // Event that is triggered when all conditions of the current lesson have been met
     public event Action OnMovePosition;
 
@@ -34,8 +32,6 @@ public class DetectButtonPress : MonoBehaviour
 
     // Check if Object has been activated
     private bool objectActivated;
-
-    private IEnumerator measure;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +60,6 @@ public class DetectButtonPress : MonoBehaviour
         // Find XR Origin GameObject
         player = GameObject.FindGameObjectWithTag("Player");
 
-        coroutineStarted = false;
         waypointEntered = false;
         objectSelected = false;
         objectActivated = false;
@@ -110,41 +105,17 @@ public class DetectButtonPress : MonoBehaviour
     private bool DetectRotation(float stickValue)
     {
         // Activate rotation functionality
-        player.GetComponent<ActionBasedContinuousTurnProvider>().enabled = true;
+        player.GetComponent<ActionBasedSnapTurnProvider>().enabled = true;
 
         // Start Measuring Time until we have waited long enough or until Player has stopped rotating
         if (stickValue < 0)
         {
             if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out Vector2 thumbStickValue) && (thumbStickValue.x <= stickValue))
-            {
-                if (!coroutineStarted)
-                {
-                    measure = MeasureTime(2f);
-                    StartCoroutine(measure);
-                }
-            }
-            else
-            {
-                if (measure != null)
-                    StopCoroutine(measure);
-                coroutineStarted = false;
-            }
+                inputDetected = true;
         } else
         {
             if (rightController.TryReadAxis2DValue(InputHelpers.Axis2D.PrimaryAxis2D, out Vector2 thumbStickValue) && (thumbStickValue.x >= stickValue))
-            {
-                if (!coroutineStarted)
-                {
-                    measure = MeasureTime(2f);
-                    StartCoroutine(measure);
-                }
-            }
-            else
-            {
-                if (measure != null)
-                    StopCoroutine(measure);
-                coroutineStarted = false;
-            }
+                inputDetected = true;
         }
 
         // Invoke event to move Tutorio
@@ -235,19 +206,5 @@ public class DetectButtonPress : MonoBehaviour
             rightController.SendHapticImpulse(2, 0.3f);
 
         return objectActivated;
-    }
-
-    private IEnumerator MeasureTime(float time)
-    {
-        coroutineStarted = true;
-        var startTime = Time.time;
-
-        yield return new WaitUntil(() => (Time.time - startTime) > time);
-
-        rightController.SendHapticImpulse(2, 0.3f);
-
-        // Set inputDetected to true when we have waited long enough
-        inputDetected = true;
-        coroutineStarted = false;
     }
 }

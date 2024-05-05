@@ -10,6 +10,7 @@ public static class Types
         LookAt,
         Video,
         Spawn,
+        TeleportObject,
         MoveObject
     }
 
@@ -19,7 +20,7 @@ public static class Types
     {
         public InstructionType instructionType;
         public AudioClip audioClip;
-        public GameObject lookAtTarget;
+        public GameObject target;
         public Vector3 optPosition;     // ToDo: only show when instructionType == MoveObject (custom inspector)
     }
 

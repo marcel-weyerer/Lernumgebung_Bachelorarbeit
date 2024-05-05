@@ -141,19 +141,25 @@ public class TutorioLessonController : MonoBehaviour
                     PlayVideoClip();
                     break;
                 case InstructionType.Spawn:
-                    instruction.lookAtTarget.SetActive(true);
+                    instruction.target.SetActive(true);
+                    break;
+                case InstructionType.TeleportObject:
+                    TeleportObject(instruction.target, instruction.optPosition);
                     break;
                 case InstructionType.MoveObject:
-                    MoveObject(instruction.lookAtTarget, instruction.optPosition);
+                    MoveObject(instruction.target, instruction.optPosition);
                     break;
                 default:
                     break;
             }
 
-            PlayAudioClip(tutorioAudioSource, instruction.audioClip);
-            StartCoroutine(WaitForAudio());
+            if (instruction.audioClip != null)
+            {
+                PlayAudioClip(tutorioAudioSource, instruction.audioClip);
+                StartCoroutine(WaitForAudio());
+            }
 
-            transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.lookAtTarget.transform;
+            transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.target.transform;
             StartCoroutine(LookBackAtPlayer(2));
         }
 
@@ -217,7 +223,7 @@ public class TutorioLessonController : MonoBehaviour
         PlayAudioClip(tutorioAudioSource, lessons[currentLesson].GetCongratulation());
     }
 
-    private void MoveObject(GameObject obj, Vector3 position)
+    private void TeleportObject(GameObject obj, Vector3 position)
     {
         var interactable = obj.GetComponent<XRGrabInteractable>();
 
@@ -231,5 +237,10 @@ public class TutorioLessonController : MonoBehaviour
 
         // Activate interactable component
         interactable.enabled = true;
+    }
+
+    private void MoveObject(GameObject obj, Vector3 position)
+    {
+        obj.GetComponent<MoveToView>().MoveToNextPosition(position);
     }
 }
