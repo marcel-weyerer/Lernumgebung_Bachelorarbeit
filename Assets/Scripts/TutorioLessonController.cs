@@ -140,14 +140,20 @@ public class TutorioLessonController : MonoBehaviour
                 case InstructionType.Video:
                     PlayVideoClip();
                     break;
-                case InstructionType.Spawn:
+                case InstructionType.ShowObject:
                     instruction.target.SetActive(true);
+                    break;
+                case InstructionType.HideObject:
+                    instruction.target.SetActive(false);
                     break;
                 case InstructionType.TeleportObject:
                     TeleportObject(instruction.target, instruction.optPosition);
                     break;
                 case InstructionType.MoveObject:
                     MoveObject(instruction.target, instruction.optPosition);
+                    break;
+                case InstructionType.RotateObject:
+                    RotateObject(instruction.target, instruction.optPosition);
                     break;
                 default:
                     break;
@@ -242,5 +248,10 @@ public class TutorioLessonController : MonoBehaviour
     private void MoveObject(GameObject obj, Vector3 position)
     {
         obj.GetComponent<MoveToView>().MoveToNextPosition(position);
+    }
+
+    private void RotateObject(GameObject obj, Vector3 rotation)
+    {
+        obj.transform.rotation = Quaternion.Euler(rotation);
     }
 }

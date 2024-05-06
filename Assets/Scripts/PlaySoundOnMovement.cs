@@ -11,6 +11,11 @@ public class PlaySoundOnMovement : MonoBehaviour
     [SerializeField]
     private AudioClip clip;
 
+    // Magnitude of movement before playing sound
+    [SerializeField]
+    [Range(0f, 0.01f)]
+    private float magnitude;
+
     // Position in the last frame
     private Vector3 lastPosition;
 
@@ -37,7 +42,7 @@ public class PlaySoundOnMovement : MonoBehaviour
         vectorToLastPosition.y = 0;
 
         // Play moving sound if Tutorio has moved since last frame
-        if (vectorToLastPosition.magnitude > 0.005 && !coroutineRunning)
+        if (vectorToLastPosition.magnitude > magnitude && !coroutineRunning)
         {
             coroutineRunning = true;
             StartCoroutine(PlayMovingSound());
@@ -60,7 +65,7 @@ public class PlaySoundOnMovement : MonoBehaviour
             // Save current position for the next frame
             lastPosition = transform.position;
 
-            return vectorToLastPosition.magnitude < 0.005;
+            return vectorToLastPosition.magnitude < magnitude;
         });
 
         // Stop playing moving sound when Tutorio stops moving

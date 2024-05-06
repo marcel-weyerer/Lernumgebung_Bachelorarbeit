@@ -9,9 +9,11 @@ public static class Types
     {
         LookAt,
         Video,
-        Spawn,
+        ShowObject,
+        HideObject,
         TeleportObject,
-        MoveObject
+        MoveObject,
+        RotateObject
     }
 
     // The type of an instruction
@@ -34,7 +36,7 @@ public static class Types
         ContinuousMove,
         SelectObject,
         RaySelect,
-        Activate
+        TakePhoto
     };
 
     // The type of a condition

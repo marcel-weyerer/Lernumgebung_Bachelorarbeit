@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TutorialInteraction.unity
     guid: b2e374c4c21076d49893a28ceb4586d0
   - enabled: 1
-    path: Assets/Scenes/LernszeneLevelI.unity
+    path: Assets/Scenes/LernszeneLevelShutterSpeed.unity
     guid: 85b51d3e7da30a24b88dc15c29b84d8e
   m_configObjects:
     Unity.XR.PICO.LivePreview.Settings: {fileID: 11400000, guid: 3695eebd079a3c04f98b5af06ca04dc0, type: 2}

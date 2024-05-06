@@ -262,7 +262,6 @@ GameObject:
   - component: {fileID: 73066237}
   - component: {fileID: 73066240}
   - component: {fileID: 73066239}
-  - component: {fileID: 73066238}
   m_Layer: 0
   m_Name: PhotoCamera (Physical)
   m_TagString: MainCamera
@@ -285,66 +284,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 176738950}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &73066238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73066236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 73066237}
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 0
-  antialiasingMode: 1
-  temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 1
-    keepAlpha: 1
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
 --- !u!124 &73066239
 Behaviour:
   m_ObjectHideFlags: 0
@@ -543,8 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639d02dec14a3284bbe91ba75ead1d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photoDisplayArea: {fileID: 734405645}
-  photo: {fileID: 734405643}
+  picture: {fileID: 0}
   source: {fileID: 263113022}
   clip: {fileID: 8300000, guid: fe428988c25afc8498c026d995d20edc, type: 3}
   photoCamera: {fileID: 73066240}
@@ -1121,55 +1059,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &309402971
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 309402973}
-  - component: {fileID: 309402972}
-  m_Layer: 6
-  m_Name: Post Processing
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &309402972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309402971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 099ecfd386d921e4597496a2cbdfb06a, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
---- !u!4 &309402973
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309402971}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.7966976, y: -2.250365, z: -2.8022523}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &324466497
 GameObject:
   m_ObjectHideFlags: 0
@@ -2927,6 +2816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 4964939406668877089}
   clip: {fileID: 8300000, guid: 4348480e66e9ad44a874e578f2f98d39, type: 3}
+  magnitude: 0.005
 --- !u!114 &1385257430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,7 +2833,7 @@ MonoBehaviour:
   m_TurnAmount: 30
   m_DebounceTime: 1
   m_EnableTurnLeftRight: 1
-  m_EnableTurnAround: 1
+  m_EnableTurnAround: 0
   m_DelayTime: 0
   m_LeftHandSnapTurnAction:
     m_UseReference: 0
@@ -3088,11 +2978,11 @@ MonoBehaviour:
     instructions:
     - instructionType: 2
       audioClip: {fileID: 8300000, guid: f062349154b50e448a3370a4dad7e5dd, type: 3}
-      lookAtTarget: {fileID: 176738949}
+      target: {fileID: 176738949}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 1
       audioClip: {fileID: 8300000, guid: 0a9248b5a5d0cc746b87dc8b4fd7380a, type: 3}
-      lookAtTarget: {fileID: 3135967670055467324}
+      target: {fileID: 3135967670055467324}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 32900000, guid: 33ee3736b0255fb46876b806ddb0aa88, type: 3}
     conditions:
@@ -3102,13 +2992,13 @@ MonoBehaviour:
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 4f66dfb074fb5ab4bb029a8ef2cdc0b3, type: 3}
     instructions:
-    - instructionType: 3
+    - instructionType: 4
       audioClip: {fileID: 8300000, guid: e8df3c90917211b45a4416fb7c361f38, type: 3}
-      lookAtTarget: {fileID: 176738949}
+      target: {fileID: 176738949}
       optPosition: {x: 1.45, y: 0.3, z: -2.7}
     - instructionType: 1
       audioClip: {fileID: 8300000, guid: 7fc9a2fb42b75794e949e9d48b7a3976, type: 3}
-      lookAtTarget: {fileID: 3135967670055467324}
+      target: {fileID: 3135967670055467324}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 32900000, guid: 33ee3736b0255fb46876b806ddb0aa88, type: 3}
     conditions:
@@ -3119,17 +3009,17 @@ MonoBehaviour:
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: ee587202c34f3eb4a9459e70d03c8d00, type: 3}
     instructions:
-    - instructionType: 3
+    - instructionType: 4
       audioClip: {fileID: 8300000, guid: 292d710e386dcdd408572520a3accd5e, type: 3}
-      lookAtTarget: {fileID: 176738949}
+      target: {fileID: 176738949}
       optPosition: {x: 0, y: 1.1, z: -2}
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: 6cf1f1ddaefba1c4cb9d17db2b48116e, type: 3}
-      lookAtTarget: {fileID: 1724717932}
+      target: {fileID: 1724717932}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 1
       audioClip: {fileID: 8300000, guid: 58c565f6fcafba242a2363d3e9ead067, type: 3}
-      lookAtTarget: {fileID: 3135967670055467324}
+      target: {fileID: 3135967670055467324}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 32900000, guid: 77d3a5c7cae635d489eca246381276c0, type: 3}
     conditions:
@@ -3139,12 +3029,13 @@ MonoBehaviour:
     - selectedFunction: 7
       parameters:
       - {fileID: 176738949}
+      - {fileID: 734405643}
     congratulation: {fileID: 8300000, guid: 2c88a827ae4ac3444b7d8e68ffe3e79e, type: 3}
   - intro: {fileID: 8300000, guid: 6c841fc61270ce24999823f9b41219fc, type: 3}
     instructions:
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: 80864d92389de834995238d892253f5b, type: 3}
-      lookAtTarget: {fileID: 1263122283}
+      target: {fileID: 1263122283}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 0}
     conditions:
@@ -5261,7 +5152,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.8
-  positions: []
 --- !u!114 &2071767401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5276,6 +5166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 756096491847976452}
   clip: {fileID: 8300000, guid: 30238407e0776c54b88ecd01d0582a1d, type: 3}
+  magnitude: 0.005
 --- !u!1 &2102471959
 GameObject:
   m_ObjectHideFlags: 0
@@ -22408,4 +22299,3 @@ SceneRoots:
   - {fileID: 470333540}
   - {fileID: 1698645762}
   - {fileID: 1442074780}
-  - {fileID: 309402973}

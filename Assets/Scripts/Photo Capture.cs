@@ -5,11 +5,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class PhotoCapture : MonoBehaviour
 {
-    [SerializeField]
-    private Image photoDisplayArea;
+    /*[SerializeField]
+    private Image photoDisplayArea;*/
 
-    [SerializeField]
-    private GameObject photo;
+    [HideInInspector]
+    public GameObject picture;
 
     [SerializeField]
     private AudioSource source;
@@ -23,33 +23,31 @@ public class PhotoCapture : MonoBehaviour
     // Texture of photo
     private Texture2D renderResult;
 
-    // Flag for taking a photo
-    private bool takePhoto;
-
     // Start is called before the first frame update
     void Start()
     {
-        takePhoto = false;
-
         GetComponent<XRGrabInteractable>().activated.AddListener(StartPictureCapture);
     }
 
-    // Update is called once per frame
-    void Update()
+    /*public void StartPictureCapture(GameObject picture)
     {
-        if (takePhoto)
-        {
-            takePhoto = false;
-            StartCoroutine(CapturePhoto());
-        }
-    }
-
-    private void StartPictureCapture(ActivateEventArgs args)
-    {
-        takePhoto = true;
-
         // Enable processing intensive camera
         photoCamera.gameObject.SetActive(true);
+
+        // Capture Photo
+        StartCoroutine(CapturePhoto(picture));
+
+        source.clip = clip;
+        source.Play();
+    }*/
+
+    public void StartPictureCapture(ActivateEventArgs args)
+    {
+        // Enable processing intensive camera
+        photoCamera.gameObject.SetActive(true);
+
+        // Capture Photo
+        StartCoroutine(CapturePhoto());
 
         source.clip = clip;
         source.Play();
@@ -89,10 +87,13 @@ public class PhotoCapture : MonoBehaviour
 
     private void ShowPhoto()
     {
-        // Unity UI needs a sprite to show the photo
-        Sprite photoSprite = Sprite.Create(renderResult, new Rect(0, 0, renderResult.width, renderResult.height), new Vector2(0.5f, 0.5f), 100f);
-        photoDisplayArea.sprite = photoSprite;
+        if (picture != null)
+        {
+            // Unity UI needs a sprite to show the photo
+            Sprite photoSprite = Sprite.Create(renderResult, new Rect(0, 0, renderResult.width, renderResult.height), new Vector2(0.5f, 0.5f), 100f);
+            picture.GetComponent<Image>().sprite = photoSprite;
 
-        photo.GetComponent<Animator>().SetTrigger("StartFade");
+            picture.GetComponent<Animator>().SetTrigger("StartFade");
+        }
     }
 }

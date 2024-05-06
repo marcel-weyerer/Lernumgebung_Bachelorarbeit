@@ -54,7 +54,7 @@ public class DetectButtonPress : MonoBehaviour
             { FunctionOption.ContinuousMove, DetectContinuousMove },
             { FunctionOption.SelectObject, DetectObjectSelection },
             { FunctionOption.RaySelect, DetectRayObjectSelection },
-            { FunctionOption.Activate, DetectObjectActivate }
+            { FunctionOption.TakePhoto, DetectPhotoTaken }
         };
 
         // Find XR Origin GameObject
@@ -192,14 +192,17 @@ public class DetectButtonPress : MonoBehaviour
         return DetectObjectSelection(param);
     }
 
-    private bool DetectObjectActivate(GameObject[] param)
+    private bool DetectPhotoTaken(GameObject[] param)
     {
         if (param == null || !param.Any())
             throw new Exception("param must contain one element!");
 
         // ToDo: Activate Activation
 
-        param.First().GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { objectActivated = true; });
+        param[0].GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { 
+            objectActivated = true;
+            param[0].GetComponent<PhotoCapture>().picture = param[1];
+        });
 
         // Haptic Impule on completion
         if (objectActivated)
