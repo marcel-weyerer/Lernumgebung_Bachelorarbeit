@@ -17,6 +17,7 @@ public class DetectButtonPress : MonoBehaviour
     private Dictionary<FunctionOption, Func<GameObject[], bool>> functionLookup;
 
     private InputDevice rightController;
+    private InputDevice leftController;
 
     // Variable to check if a specific Input has been made
     private bool inputDetected;
@@ -38,16 +39,25 @@ public class DetectButtonPress : MonoBehaviour
     {
         // Get right hand controller
         var rightHandedControllers = new List<InputDevice>();
-        var desiredCharacteristics = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
-        InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, rightHandedControllers);
+        var desiredCharacteristicsRight = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
+        InputDevices.GetDevicesWithCharacteristics(desiredCharacteristicsRight, rightHandedControllers);
 
         if (rightHandedControllers.Count > 0)
             rightController = rightHandedControllers[0];
+
+        // Get left hand controller
+        var leftHandedControllers = new List<InputDevice>();
+        var desiredCharacteristicsLeft = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
+        InputDevices.GetDevicesWithCharacteristics(desiredCharacteristicsLeft, leftHandedControllers);
+
+        if (leftHandedControllers.Count > 0)
+            leftController = leftHandedControllers[0];
 
         // Initialize Dictionary
         functionLookup = new Dictionary<FunctionOption, Func<GameObject[], bool>>()
         {
             { FunctionOption.A_ButtonPress, DetectA_Button },
+            { FunctionOption.X_ButtonPress, DetectX_Button },
             { FunctionOption.RotateLeft, DetectRotationLeft },
             { FunctionOption.RotateRight, DetectRotationRight },
             { FunctionOption.Teleport, DetectTeleport },
@@ -88,6 +98,18 @@ public class DetectButtonPress : MonoBehaviour
         // Haptic Impule on completion
         if (inputDetected)
             rightController.SendHapticImpulse(2, 0.3f);
+
+        return inputDetected;
+    }
+
+    private bool DetectX_Button(GameObject[] param)
+    {
+        // Check if X-Button is being pressed
+        leftController.TryGetFeatureValue(CommonUsages.primaryButton, out inputDetected);
+
+        // Haptic Impule on completion
+        if (inputDetected)
+            leftController.SendHapticImpulse(2, 0.3f);
 
         return inputDetected;
     }

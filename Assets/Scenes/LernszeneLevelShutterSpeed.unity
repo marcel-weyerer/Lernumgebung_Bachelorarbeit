@@ -2005,6 +2005,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 176738952}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
       m_Calls:
@@ -8219,7 +8231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &716103388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14996,14 +15008,14 @@ MonoBehaviour:
     instructionVideo: {fileID: 0}
     conditions: []
     congratulation: {fileID: 0}
-  - intro: {fileID: 0}
+  - intro: {fileID: 8300000, guid: a06577abfee3f624ab355a0062025a7c, type: 3}
     instructions:
     - instructionType: 3
       audioClip: {fileID: 0}
       target: {fileID: 1645935418}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 2
-      audioClip: {fileID: 0}
+      audioClip: {fileID: 8300000, guid: 0f36f01e973343841963f0bb5b3d439b, type: 3}
       target: {fileID: 394974310}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 0}
@@ -15015,12 +15027,23 @@ MonoBehaviour:
     congratulation: {fileID: 0}
   - intro: {fileID: 0}
     instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: d77f9484614895748b4bc2ce7246f2dd, type: 3}
+      target: {fileID: 406250394}
+      optPosition: {x: 0, y: 0, z: 0}
+    instructionVideo: {fileID: 0}
+    conditions:
+    - selectedFunction: 0
+      parameters: []
+    congratulation: {fileID: 0}
+  - intro: {fileID: 8300000, guid: 390cbeb208eddbc4da07640ef8891d3c, type: 3}
+    instructions:
     - instructionType: 3
       audioClip: {fileID: 0}
       target: {fileID: 394974310}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 2
-      audioClip: {fileID: 0}
+      audioClip: {fileID: 8300000, guid: 0f36f01e973343841963f0bb5b3d439b, type: 3}
       target: {fileID: 918505000}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 0}
@@ -15032,12 +15055,23 @@ MonoBehaviour:
     congratulation: {fileID: 0}
   - intro: {fileID: 0}
     instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 6a7c1c86dbe5d824497f1e3cde4fd5e9, type: 3}
+      target: {fileID: 1335698101}
+      optPosition: {x: 0, y: 0, z: 0}
+    instructionVideo: {fileID: 0}
+    conditions:
+    - selectedFunction: 0
+      parameters: []
+    congratulation: {fileID: 0}
+  - intro: {fileID: 0}
+    instructions:
     - instructionType: 3
       audioClip: {fileID: 0}
       target: {fileID: 918505000}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 2
-      audioClip: {fileID: 0}
+      audioClip: {fileID: 8300000, guid: 268be40c5566c2a47ba7cb7b29361ef4, type: 3}
       target: {fileID: 203357516}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 0}
@@ -15048,7 +15082,23 @@ MonoBehaviour:
       - {fileID: 2031096388}
     congratulation: {fileID: 0}
   - intro: {fileID: 0}
-    instructions: []
+    instructions:
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: aa2c446e0b44aff44a1b17f5f45985e4, type: 3}
+      target: {fileID: 1263122283}
+      optPosition: {x: 0, y: 0, z: 0}
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 5923f97492157f84e8de50b90741737d, type: 3}
+      target: {fileID: 1263122283}
+      optPosition: {x: 0, y: 0, z: 0}
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 69c585b9e360f0a4b98fbf5854890030, type: 3}
+      target: {fileID: 1263122283}
+      optPosition: {x: 0, y: 0, z: 0}
+    - instructionType: 0
+      audioClip: {fileID: 8300000, guid: 9e30a06b5976bcc41a538983c27bf8f8, type: 3}
+      target: {fileID: 1263122283}
+      optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 0}
     conditions:
     - selectedFunction: 0

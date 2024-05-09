@@ -137,6 +137,10 @@ public class TutorioLessonController : MonoBehaviour
 
             switch (instruction.instructionType)
             {
+                case InstructionType.LookAt:
+                    transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.target.transform;
+                    StartCoroutine(LookBackAtPlayer(2));
+                    break;
                 case InstructionType.Video:
                     PlayVideoClip();
                     break;
@@ -155,6 +159,12 @@ public class TutorioLessonController : MonoBehaviour
                 case InstructionType.RotateObject:
                     RotateObject(instruction.target, instruction.optPosition);
                     break;
+                case InstructionType.DisableButton:
+                    instruction.target.GetComponent<Button>().interactable = false;
+                    break;
+                case InstructionType.EnableButton:
+                    instruction.target.GetComponent<Button>().interactable = true;
+                    break;
                 default:
                     break;
             }
@@ -164,9 +174,6 @@ public class TutorioLessonController : MonoBehaviour
                 PlayAudioClip(tutorioAudioSource, instruction.audioClip);
                 StartCoroutine(WaitForAudio());
             }
-
-            transform.GetChild(0).GetComponent<LookAtTarget>().target = instruction.target.transform;
-            StartCoroutine(LookBackAtPlayer(2));
         }
 
         // Wait until all conditions of current lesson have been met

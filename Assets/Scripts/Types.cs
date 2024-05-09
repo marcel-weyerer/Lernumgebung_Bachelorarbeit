@@ -13,7 +13,9 @@ public static class Types
         HideObject,
         TeleportObject,
         MoveObject,
-        RotateObject
+        RotateObject,
+        DisableButton,
+        EnableButton
     }
 
     // The type of an instruction
@@ -36,7 +38,8 @@ public static class Types
         ContinuousMove,
         SelectObject,
         RaySelect,
-        TakePhoto
+        TakePhoto,
+        X_ButtonPress
     };
 
     // The type of a condition
