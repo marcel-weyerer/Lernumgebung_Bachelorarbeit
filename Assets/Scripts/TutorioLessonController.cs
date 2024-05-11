@@ -128,7 +128,7 @@ public class TutorioLessonController : MonoBehaviour
 
     private IEnumerator GiveInstructions()
     {
-        // For all instruction audio clips make Tutorio look at the associated GameObject
+        // Give all instructions for current lesson
         foreach (var instruction in lessons[currentLesson].GetInstructions())
         {
             StartCoroutine(WaitForAudio());     // Wait for audio to finish playing
@@ -206,36 +206,6 @@ public class TutorioLessonController : MonoBehaviour
         transform.GetChild(0).GetComponent<LookAtTarget>().target = Camera.main.transform;
     }
 
-    private IEnumerator WaitForCompletion()
-    {
-        var conditionComponent = GetComponent<DetectButtonPress>();
-
-        // Wait for each condition of current lesson to be completed
-        foreach (var condition in lessons[currentLesson].GetConditions())
-        {
-            conditionComponent.ResetInput();
-            yield return new WaitUntil(() => conditionComponent.ActivateSelectedFunction(condition));
-        }
-        // When all conditions have been met trigger LessonCompleted
-        OnLessonCompleted?.Invoke();
-
-        PlayAudioClip(playerAudioSource, lessonCompleteAudio);
-        PlayAudioClip(videoAudioSource, hideShowVideoSound);
-    }
-
-    // StartCongrats is being called, when a lesson has been completed successfully
-    private void StartCongrats()
-    {
-        // Trigger for Celebration Animation
-        animator.SetTrigger("StartCelebration");
-
-        // Hide Video Player
-        video.SetActive(false);
-
-        // Play Audio Congratulation
-        PlayAudioClip(tutorioAudioSource, lessons[currentLesson].GetCongratulation());
-    }
-
     private void TeleportObject(GameObject obj, Vector3 position)
     {
         var interactable = obj.GetComponent<XRGrabInteractable>();
@@ -260,5 +230,43 @@ public class TutorioLessonController : MonoBehaviour
     private void RotateObject(GameObject obj, Vector3 rotation)
     {
         obj.transform.rotation = Quaternion.Euler(rotation);
+    }
+
+    private IEnumerator WaitForCompletion()
+    {
+        var conditionComponent = GetComponent<DetectButtonPress>();
+
+        // Wait for each condition of current lesson to be completed
+        foreach (var condition in lessons[currentLesson].GetConditions())
+        {
+            conditionComponent.ResetInput();
+            yield return new WaitUntil(() => conditionComponent.ActivateSelectedFunction(condition));
+        }
+        // When all conditions have been met trigger LessonCompleted
+        OnLessonCompleted?.Invoke();
+    }
+
+    // StartCongrats is being called, when a lesson has been completed successfully
+    private void StartCongrats()
+    {
+        // Hide Video Player
+        if (video.activeSelf)
+        {
+            video.SetActive(false);
+            PlayAudioClip(videoAudioSource, hideShowVideoSound);
+        }
+
+        // Play Audio Congratulation
+        if (lessons[currentLesson].GetCongratulation() != null)
+            PlayAudioClip(tutorioAudioSource, lessons[currentLesson].GetCongratulation());
+
+        // Trigger celebration animation if wanted
+        if (lessons[currentLesson].GetDoCelebration())
+        {
+            animator.SetTrigger("StartCelebration");
+            PlayAudioClip(playerAudioSource, lessonCompleteAudio);
+        }
+        else
+            StartHoverAnim();
     }
 }

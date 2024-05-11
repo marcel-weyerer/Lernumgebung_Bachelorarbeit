@@ -26,6 +26,10 @@ public class Lesson
     [SerializeField]
     private AudioClip congratulation;
 
+    // Flag for deciding if celebration animation will be played or not
+    [SerializeField]
+    private bool doCelebration;
+
     public AudioClip GetIntro()
     {
         return intro;
@@ -49,5 +53,10 @@ public class Lesson
     public AudioClip GetCongratulation()
     {
         return congratulation;
+    }
+
+    public bool GetDoCelebration()
+    {
+        return doCelebration;
     }
 }

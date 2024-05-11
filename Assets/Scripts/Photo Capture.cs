@@ -29,18 +29,6 @@ public class PhotoCapture : MonoBehaviour
         GetComponent<XRGrabInteractable>().activated.AddListener(StartPictureCapture);
     }
 
-    /*public void StartPictureCapture(GameObject picture)
-    {
-        // Enable processing intensive camera
-        photoCamera.gameObject.SetActive(true);
-
-        // Capture Photo
-        StartCoroutine(CapturePhoto(picture));
-
-        source.clip = clip;
-        source.Play();
-    }*/
-
     public void StartPictureCapture(ActivateEventArgs args)
     {
         // Enable processing intensive camera

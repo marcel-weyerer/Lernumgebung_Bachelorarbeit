@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class Types
@@ -29,7 +27,7 @@ public static class Types
     }
 
     // Enum for all available Functions for the conditions
-    public enum FunctionOption
+    public enum ConditionType
     {
         A_ButtonPress,
         RotateLeft,
@@ -39,14 +37,16 @@ public static class Types
         SelectObject,
         RaySelect,
         TakePhoto,
-        X_ButtonPress
+        X_ButtonPress,
+        CompareValue
     };
 
     // The type of a condition
     [System.Serializable]
     public struct Condition
     {
-        public FunctionOption selectedFunction;
-        public GameObject[] parameters;
+        public ConditionType selectedFunction;
+        public GameObject[] objects;
+        public string comparison;
     };
 }

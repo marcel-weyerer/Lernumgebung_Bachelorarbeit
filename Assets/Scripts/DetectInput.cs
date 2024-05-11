@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using static Types;
@@ -14,7 +15,7 @@ public class DetectButtonPress : MonoBehaviour
     private GameObject player;
 
     // Dictionary that connects a FunctionOption to a specific method
-    private Dictionary<FunctionOption, Func<GameObject[], bool>> functionLookup;
+    private Dictionary<ConditionType, Func<Condition, bool>> functionLookup;
 
     private InputDevice rightController;
     private InputDevice leftController;
@@ -54,17 +55,18 @@ public class DetectButtonPress : MonoBehaviour
             leftController = leftHandedControllers[0];
 
         // Initialize Dictionary
-        functionLookup = new Dictionary<FunctionOption, Func<GameObject[], bool>>()
+        functionLookup = new Dictionary<ConditionType, Func<Condition, bool>>()
         {
-            { FunctionOption.A_ButtonPress, DetectA_Button },
-            { FunctionOption.X_ButtonPress, DetectX_Button },
-            { FunctionOption.RotateLeft, DetectRotationLeft },
-            { FunctionOption.RotateRight, DetectRotationRight },
-            { FunctionOption.Teleport, DetectTeleport },
-            { FunctionOption.ContinuousMove, DetectContinuousMove },
-            { FunctionOption.SelectObject, DetectObjectSelection },
-            { FunctionOption.RaySelect, DetectRayObjectSelection },
-            { FunctionOption.TakePhoto, DetectPhotoTaken }
+            { ConditionType.A_ButtonPress, DetectA_Button },
+            { ConditionType.X_ButtonPress, DetectX_Button },
+            { ConditionType.RotateLeft, DetectRotationLeft },
+            { ConditionType.RotateRight, DetectRotationRight },
+            { ConditionType.Teleport, DetectTeleport },
+            { ConditionType.ContinuousMove, DetectContinuousMove },
+            { ConditionType.SelectObject, DetectObjectSelection },
+            { ConditionType.RaySelect, DetectRayObjectSelection },
+            { ConditionType.TakePhoto, DetectPhotoTaken },
+            { ConditionType.CompareValue, DetectValueComparison }
         };
 
         // Find XR Origin GameObject
@@ -86,11 +88,11 @@ public class DetectButtonPress : MonoBehaviour
     // ActivateSelectedFunction is called to call a selected function
     public bool ActivateSelectedFunction(Condition condition)
     {
-        return functionLookup[condition.selectedFunction].Invoke(condition.parameters);
+        return functionLookup[condition.selectedFunction].Invoke(condition);
     }
 
     // A_ButtonPress detects wether the A-Button has been pressed
-    private bool DetectA_Button(GameObject[] param)
+    private bool DetectA_Button(Condition condition)
     {
         // Check if A-Button is being pressed
         rightController.TryGetFeatureValue(CommonUsages.primaryButton, out inputDetected);
@@ -102,7 +104,7 @@ public class DetectButtonPress : MonoBehaviour
         return inputDetected;
     }
 
-    private bool DetectX_Button(GameObject[] param)
+    private bool DetectX_Button(Condition condition)
     {
         // Check if X-Button is being pressed
         leftController.TryGetFeatureValue(CommonUsages.primaryButton, out inputDetected);
@@ -114,12 +116,12 @@ public class DetectButtonPress : MonoBehaviour
         return inputDetected;
     }
 
-    private bool DetectRotationLeft(GameObject[] param)
+    private bool DetectRotationLeft(Condition condition)
     {
         return DetectRotation(-0.5f);
     }
 
-    private bool DetectRotationRight(GameObject[] param)
+    private bool DetectRotationRight(Condition condition)
     {
         return DetectRotation(0.5f);
     }
@@ -151,34 +153,36 @@ public class DetectButtonPress : MonoBehaviour
         return inputDetected;
     }
 
-    private bool DetectTeleport(GameObject[] param)
+    private bool DetectTeleport(Condition condition)
     {
-        if (param == null || !param.Any())
-            throw new Exception("param must contain one element!");
+        if (condition.objects == null || !condition.objects.Any())
+            throw new Exception("condition.objects must contain one element!");
+
+        // TODO: Check if component exists in object (same for following methods)
 
         // Activate teleportation functionality
         player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
-        return DetectWaypointEnter(param.First());
+        return DetectWaypointEnter(condition.objects[0]);
     }
 
-    private bool DetectContinuousMove(GameObject[] param)
+    private bool DetectContinuousMove(Condition condition)
     {
-        if (param == null || !param.Any())
-            throw new Exception("param must contain one element!");
+        if (condition.objects == null || !condition.objects.Any())
+            throw new Exception("condition.objects must contain one element!");
 
         // Deactivate Teleportation
         player.GetComponent<ActivateTeleportationRay>().enabled = false;
         // Activate Continuous Move
         player.GetComponent<ActionBasedContinuousMoveProvider>().enabled = true;
 
-        return DetectWaypointEnter(param.First());
+        return DetectWaypointEnter(condition.objects[0]);
     }
 
-    private bool DetectWaypointEnter(GameObject param)
+    private bool DetectWaypointEnter(GameObject waypoint)
     {
         // Subscribe method to player enter event
-        param.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
+        waypoint.GetComponent<Trigger>().OnPlayerEnter += () => waypointEntered = true;
 
         // Invoke event to move Tutorio
         if (waypointEntered)
@@ -190,12 +194,12 @@ public class DetectButtonPress : MonoBehaviour
         return waypointEntered;
     }
 
-    private bool DetectObjectSelection(GameObject[] param)
+    private bool DetectObjectSelection(Condition condition)
     {
-        if (param == null || !param.Any())
-            throw new Exception("param must contain one element!");
+        if (condition.objects == null || !condition.objects.Any())
+            throw new Exception("condition.objects must contain one element!");
 
-        param.First().GetComponent<XRGrabInteractable>().selectEntered.AddListener((SelectEnterEventArgs) => { objectSelected = true; });
+        condition.objects[0].GetComponent<XRGrabInteractable>().selectEntered.AddListener((SelectEnterEventArgs) => { objectSelected = true; });
 
         // Haptic Impule on completion
         if (objectSelected)
@@ -204,32 +208,64 @@ public class DetectButtonPress : MonoBehaviour
         return objectSelected;
     }
 
-    private bool DetectRayObjectSelection(GameObject[] param)
+    private bool DetectRayObjectSelection(Condition condition)
     {
-        if (param == null || param.Length < 2)
-            throw new Exception("param must contain one element!");
+        if (condition.objects == null || condition.objects.Length < 2)
+            throw new Exception("condition.objects must contain one element!");
 
-        param[1].SetActive(true);
+        condition.objects[1].SetActive(true);
 
-        return DetectObjectSelection(param);
+        return DetectObjectSelection(condition);
     }
 
-    private bool DetectPhotoTaken(GameObject[] param)
+    private bool DetectPhotoTaken(Condition condition)
     {
-        if (param == null || !param.Any())
-            throw new Exception("param must contain one element!");
+        if (condition.objects == null || !condition.objects.Any())
+            throw new Exception("condition.objects must contain one element!");
 
-        // ToDo: Activate Activation
+        var captureComponent = condition.objects[0].GetComponent<PhotoCapture>();
 
-        param[0].GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { 
+        // Activate Photo Capture component of camera
+        captureComponent.enabled = true;
+
+        condition.objects[0].GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { 
             objectActivated = true;
-            param[0].GetComponent<PhotoCapture>().picture = param[1];
+            captureComponent.picture = condition.objects[1];
         });
 
-        // Haptic Impule on completion
+        // Haptic Impule on completion and reset
         if (objectActivated)
+        {
+            captureComponent.enabled = false;
             rightController.SendHapticImpulse(2, 0.3f);
+        }
 
         return objectActivated;
+    }
+
+    private bool DetectValueComparison(Condition condition)
+    {
+        if (condition.objects == null || !condition.objects.Any())
+            throw new Exception("condition.objects must contain one element!");
+        if (condition.comparison == null || condition.comparison.Length < 1)
+            throw new Exception("condition.comparisons must not be empty or null!");
+
+        var valueComponent = condition.objects[0].GetComponent<ChangeExposureValue>();
+
+        condition.objects[1].GetComponent<Button>().onClick.AddListener(() =>
+        {
+            // Compare current exposure value to expected value
+            if (valueComponent.GetCurrentUnsavedValue().Equals(condition.comparison))
+            {
+                valueComponent.PlayCorrectSound();
+                valueComponent.SetCurrentValue();
+                inputDetected = true;
+            } else
+            {
+                valueComponent.PlayErrorSound();
+            }
+        });
+        
+        return inputDetected;
     }
 }

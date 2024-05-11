@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -12,7 +13,30 @@ public class ChangeExposureValue : MonoBehaviour
 
     // Index of the starting value in exposureValues
     [SerializeField]
-    private int initValueIndex;
+    private int currentValueIndex;
+
+    // Current exposureValue
+    private string currentValue;
+
+    // Feference to Return Button
+    [SerializeField]
+    private Button returnButton;
+
+    // Camera Audio Source
+    [SerializeField]
+    private AudioSource audioSource;
+
+    // Correct Answer Sound
+    [SerializeField]
+    private AudioClip correctClip;
+
+    // Wrong Setting Sound
+    [SerializeField]
+    private AudioClip errorClip;
+
+    // Camera Menu Animator
+    [SerializeField]
+    private Animator animator;
 
     // TextMeshPro Component
     private TMP_Text value;
@@ -35,7 +59,9 @@ public class ChangeExposureValue : MonoBehaviour
 
         value = GetComponent<TMP_Text>();
 
-        value.text = exposureValues[initValueIndex];
+        value.text = exposureValues[currentValueIndex];
+
+        SetCurrentValue();
 
         stickReleased = true;
     }
@@ -51,19 +77,52 @@ public class ChangeExposureValue : MonoBehaviour
             // stick Released to false to only change a value once
             stickReleased = false;
 
-            value.text = exposureValues[--initValueIndex % exposureValues.Length];
+            value.text = exposureValues[--currentValueIndex % exposureValues.Length];
         }
         else if (stickReleased && (thumbStickValue.x >= 0.5))
         {
             // stick Released to false to only change a value once
             stickReleased = false;
 
-            value.text = exposureValues[++initValueIndex % exposureValues.Length];
+            value.text = exposureValues[++currentValueIndex % exposureValues.Length];
         }
 
         // Only when the stick is released the flag is set to true to allow another change of the value
         // This is supposed to prevent multiple value changes without releasing the stick inbetween
         if (!stickReleased && (thumbStickValue.x < 0.5) && (thumbStickValue.x > -0.5))
             stickReleased = true;
+    }
+
+    public string GetCurrentUnsavedValue()
+    {
+        return exposureValues[currentValueIndex];
+    }
+
+    public string GetCurrentValue()
+    {
+        return currentValue;
+    }
+
+    public void SetCurrentValue()
+    {
+        currentValue = exposureValues[currentValueIndex];
+
+        returnButton.onClick.Invoke();
+    }
+
+    public void PlayCorrectSound()
+    {
+        animator.SetTrigger("CorrectAnswer");
+
+        audioSource.clip = correctClip;
+        audioSource.Play();
+    }
+
+    public void PlayErrorSound()
+    {
+        animator.SetTrigger("WrongAnswer");
+
+        audioSource.clip = errorClip;
+        audioSource.Play();
     }
 }
