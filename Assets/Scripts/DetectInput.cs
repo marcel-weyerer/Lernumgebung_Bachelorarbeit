@@ -199,6 +199,10 @@ public class DetectButtonPress : MonoBehaviour
         if (condition.objects == null || !condition.objects.Any())
             throw new Exception("condition.objects must contain one element!");
 
+        // Activate select input of controller
+        condition.objects[1].GetComponent<XRController>().enableInputActions = true;
+
+        // Wait for interactable to be selected
         condition.objects[0].GetComponent<XRGrabInteractable>().selectEntered.AddListener((SelectEnterEventArgs) => { objectSelected = true; });
 
         // Haptic Impule on completion
@@ -259,6 +263,9 @@ public class DetectButtonPress : MonoBehaviour
             {
                 valueComponent.PlayCorrectSound();
                 valueComponent.SetCurrentValue();
+
+                condition.objects[2].GetComponent<Button>().interactable = false;
+
                 inputDetected = true;
             } else
             {
