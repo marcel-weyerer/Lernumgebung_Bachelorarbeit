@@ -118,12 +118,12 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectRotationLeft(Condition condition)
     {
-        return DetectRotation(-0.5f);
+        return DetectRotation(-0.3f);
     }
 
     private bool DetectRotationRight(Condition condition)
     {
-        return DetectRotation(0.5f);
+        return DetectRotation(0.3f);
     }
 
     private bool DetectRotation(float stickValue)

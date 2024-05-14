@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -31,6 +32,10 @@ public class TutorioLessonController : MonoBehaviour
     [SerializeField]
     private AudioClip hideShowVideoSound;
 
+    // Sound effect when beginning task
+    [SerializeField]
+    private AudioClip beginTask;
+
     // Sound effect when completing a lesson
     [SerializeField]
     private AudioClip lessonCompleteAudio;
@@ -56,6 +61,11 @@ public class TutorioLessonController : MonoBehaviour
     // Scene to load after this one
     [SerializeField]
     private string nextScene;
+
+    [Header("Checklist")]
+    // GameObject to display checklist of tasks
+    [SerializeField]
+    private GameObject checklistDisplay;
 
     // Index of the current lesson in lessons
     private int currentLesson;
@@ -176,6 +186,11 @@ public class TutorioLessonController : MonoBehaviour
             }
         }
 
+        yield return new WaitUntil(() => audioFinished);
+
+        if (lessons[currentLesson] != null)
+            PlayAudioClip(playerAudioSource, beginTask);
+
         // Wait until all conditions of current lesson have been met
         StartCoroutine(WaitForCompletion());
     }
@@ -234,6 +249,11 @@ public class TutorioLessonController : MonoBehaviour
 
     private IEnumerator WaitForCompletion()
     {
+        var tasks = lessons[currentLesson].GetCheckList();
+        // Display tasks on checklist if any exist
+        if (tasks != null || tasks.Any())
+            checklistDisplay.GetComponent<DisplayChecklist>().DisplayList(tasks);
+
         var conditionComponent = GetComponent<DetectButtonPress>();
 
         // Wait for each condition of current lesson to be completed
@@ -249,6 +269,9 @@ public class TutorioLessonController : MonoBehaviour
     // StartCongrats is being called, when a lesson has been completed successfully
     private void StartCongrats()
     {
+        // Delete elements on checklist
+        checklistDisplay.GetComponent<DisplayChecklist>().ResetList();
+
         // Hide Video Player
         if (video.activeSelf)
         {

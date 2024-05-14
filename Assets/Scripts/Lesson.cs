@@ -22,6 +22,10 @@ public class Lesson
     [SerializeField]
     private Condition[] conditions;
 
+    // Tasks that will be written on the checklist
+    [SerializeField]
+    private string[] checklist;
+
     // Audio that is being played when Lesson is completed
     [SerializeField]
     private AudioClip congratulation;
@@ -48,6 +52,11 @@ public class Lesson
     public Condition[] GetConditions()
     {
         return conditions;
+    }
+
+    public string[] GetCheckList()
+    {
+        return checklist;
     }
     
     public AudioClip GetCongratulation()

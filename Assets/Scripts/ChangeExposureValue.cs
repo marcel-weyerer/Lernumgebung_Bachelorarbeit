@@ -77,14 +77,16 @@ public class ChangeExposureValue : MonoBehaviour
             // stick Released to false to only change a value once
             stickReleased = false;
 
-            value.text = exposureValues[--currentValueIndex % exposureValues.Length];
+            if (currentValueIndex > 0)
+                value.text = exposureValues[--currentValueIndex];
         }
         else if (stickReleased && (thumbStickValue.x >= 0.5))
         {
             // stick Released to false to only change a value once
             stickReleased = false;
 
-            value.text = exposureValues[++currentValueIndex % exposureValues.Length];
+            if (currentValueIndex < exposureValues.Length - 1)
+                value.text = exposureValues[++currentValueIndex];
         }
 
         // Only when the stick is released the flag is set to true to allow another change of the value
