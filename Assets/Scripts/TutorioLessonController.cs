@@ -188,7 +188,7 @@ public class TutorioLessonController : MonoBehaviour
 
         yield return new WaitUntil(() => audioFinished);
 
-        if (lessons[currentLesson] != null)
+        if (lessons[currentLesson].GetConditions() != null || lessons[currentLesson].GetConditions().Any())
             PlayAudioClip(playerAudioSource, beginTask);
 
         // Wait until all conditions of current lesson have been met

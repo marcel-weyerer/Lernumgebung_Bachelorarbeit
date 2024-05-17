@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
@@ -196,11 +194,11 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectObjectSelection(Condition condition)
     {
-        if (condition.objects == null || !condition.objects.Any())
-            throw new Exception("condition.objects must contain one element!");
+        if (condition.objects == null || condition.objects.Length < 2)
+            throw new Exception("condition.objects must contain two element!");
 
         // Activate select input of controller
-        condition.objects[1].GetComponent<XRController>().enableInputActions = true;
+        condition.objects[1].GetComponent<XRBaseController>().enableInputActions = true;
 
         // Wait for interactable to be selected
         condition.objects[0].GetComponent<XRGrabInteractable>().selectEntered.AddListener((SelectEnterEventArgs) => { objectSelected = true; });
@@ -211,13 +209,10 @@ public class DetectButtonPress : MonoBehaviour
 
         return objectSelected;
     }
-
     private bool DetectRayObjectSelection(Condition condition)
     {
         if (condition.objects == null || condition.objects.Length < 2)
-            throw new Exception("condition.objects must contain one element!");
-
-        condition.objects[1].SetActive(true);
+            throw new Exception("condition.objects must contain two element!");
 
         return DetectObjectSelection(condition);
     }

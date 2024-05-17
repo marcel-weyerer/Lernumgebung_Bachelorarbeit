@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Waypoint Material
-  m_Shader: {fileID: -6465566751694194690, guid: 0adeb48863ccc2b4ca1e257c92a960b1, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: f79126a7024af374186fa8b37d14d150, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,14 +37,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Offset: 0.27
+    - _Height: 0.25
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Smoothness: 0.81
     m_Colors:
-    - _Emission: {r: 1, g: 0.7086384, b: 0.5613208, a: 1}
-    - _Vector2: {r: 0, g: 0, b: 0, a: 0}
+    - _Bottom_Color: {r: 1, g: 0.6079135, b: 0.2311321, a: 0.6745098}
+    - _Color: {r: 1, g: 0.44705883, b: 0.1462264, a: 1}
+    - _Top_Color: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &3062133007645209896
+--- !u!114 &3668367782750446547
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
