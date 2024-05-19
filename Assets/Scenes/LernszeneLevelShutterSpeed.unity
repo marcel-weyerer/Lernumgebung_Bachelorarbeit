@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0.5
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -14729,7 +14729,7 @@ MonoBehaviour:
     - instructionType: 5
       audioClip: {fileID: 0}
       target: {fileID: 2071767395}
-      optPosition: {x: -0.76, y: 1.38, z: 6.99}
+      optPosition: {x: 0.25, y: 1.38, z: 5.95}
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: d77f9484614895748b4bc2ce7246f2dd, type: 3}
       target: {fileID: 406250394}
@@ -14768,8 +14768,8 @@ MonoBehaviour:
       comparison: 1/60s
     checklist:
     - Setze die Belichtungszeit auf 1/60s!
-    congratulation: {fileID: 8300000, guid: 28174d913fba7a84eb4bf5fedc3af458, type: 3}
-    doCelebration: 1
+    congratulation: {fileID: 0}
+    doCelebration: 0
   - intro: {fileID: 0}
     instructions:
     - instructionType: 8
@@ -14786,10 +14786,14 @@ MonoBehaviour:
       comparison: f/2.8
     checklist:
     - Setze die Blende auf f/2.8!
-    congratulation: {fileID: 0}
-    doCelebration: 0
+    congratulation: {fileID: 8300000, guid: 28174d913fba7a84eb4bf5fedc3af458, type: 3}
+    doCelebration: 1
   - intro: {fileID: 0}
     instructions:
+    - instructionType: 3
+      audioClip: {fileID: 0}
+      target: {fileID: 5669671266372733289}
+      optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 3
       audioClip: {fileID: 0}
       target: {fileID: 394974310}
@@ -14818,7 +14822,7 @@ MonoBehaviour:
     - instructionType: 5
       audioClip: {fileID: 0}
       target: {fileID: 2071767395}
-      optPosition: {x: -0.76, y: 1.38, z: 6.99}
+      optPosition: {x: 0.25, y: 1.38, z: 5.95}
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: 6a7c1c86dbe5d824497f1e3cde4fd5e9, type: 3}
       target: {fileID: 406250394}
@@ -14832,12 +14836,16 @@ MonoBehaviour:
       target: {fileID: 203357516}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 0
-      audioClip: {fileID: 8300000, guid: 390cbeb208eddbc4da07640ef8891d3c, type: 3}
+      audioClip: {fileID: 8300000, guid: 6500b02c40bff5b4488d294696edd0cb, type: 3}
       target: {fileID: 1263122283}
       optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: 0f36f01e973343841963f0bb5b3d439b, type: 3}
       target: {fileID: 1263122283}
+      optPosition: {x: 0, y: 0, z: 0}
+    - instructionType: 2
+      audioClip: {fileID: 0}
+      target: {fileID: 21265352}
       optPosition: {x: 0, y: 0, z: 0}
     instructionVideo: {fileID: 0}
     conditions:
@@ -14847,21 +14855,19 @@ MonoBehaviour:
       - {fileID: 2031096388}
       comparison: 
     checklist:
-    - Richte die Kamera auf den Brunnen!
-    - Setze den Fokus!
     - Mach ein Foto vom Bauernhof!
     congratulation: {fileID: 0}
     doCelebration: 0
   - intro: {fileID: 0}
     instructions:
-    - instructionType: 2
-      audioClip: {fileID: 0}
-      target: {fileID: 21265352}
-      optPosition: {x: 0, y: 0, z: 0}
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: f9a480dcccf3a3240beb28fe6750c59b, type: 3}
       target: {fileID: 1263122283}
       optPosition: {x: 0, y: 0, z: 0}
+    - instructionType: 5
+      audioClip: {fileID: 0}
+      target: {fileID: 2071767395}
+      optPosition: {x: -0.76, y: 1.38, z: 6.99}
     - instructionType: 0
       audioClip: {fileID: 8300000, guid: aa2c446e0b44aff44a1b17f5f45985e4, type: 3}
       target: {fileID: 1263122283}
@@ -14887,7 +14893,8 @@ MonoBehaviour:
     - selectedFunction: 0
       objects: []
       comparison: 
-    checklist: []
+    checklist:
+    - "Dr\xFCcke den A-Knopf."
     congratulation: {fileID: 0}
     doCelebration: 0
   tutorioAudioSource: {fileID: 59765248}
@@ -15306,16 +15313,16 @@ MonoBehaviour:
   m_PlayHapticsOnSelectCanceled: 0
   m_HapticSelectCancelIntensity: 0
   m_HapticSelectCancelDuration: 0
-  m_PlayHapticsOnHoverEntered: 0
-  m_HapticHoverEnterIntensity: 0
-  m_HapticHoverEnterDuration: 0
+  m_PlayHapticsOnHoverEntered: 1
+  m_HapticHoverEnterIntensity: 0.5
+  m_HapticHoverEnterDuration: 1
   m_PlayHapticsOnHoverExited: 0
   m_HapticHoverExitIntensity: 0
   m_HapticHoverExitDuration: 0
   m_PlayHapticsOnHoverCanceled: 0
   m_HapticHoverCancelIntensity: 0
   m_HapticHoverCancelDuration: 0
-  m_AllowHoverHapticsWhileSelecting: 1
+  m_AllowHoverHapticsWhileSelecting: 0
   m_ImproveAccuracyWithSphereCollider: 0
   m_PhysicsLayerMask:
     serializedVersion: 2
@@ -24324,7 +24331,7 @@ MonoBehaviour:
   m_HapticSelectCancelIntensity: 0
   m_HapticSelectCancelDuration: 0
   m_PlayHapticsOnHoverEntered: 1
-  m_HapticHoverEnterIntensity: 0.3
+  m_HapticHoverEnterIntensity: 0.5
   m_HapticHoverEnterDuration: 1
   m_PlayHapticsOnHoverExited: 0
   m_HapticHoverExitIntensity: 0
@@ -25694,14 +25701,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3345914682096508838}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 639d02dec14a3284bbe91ba75ead1d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  picture: {fileID: 0}
   source: {fileID: 9080658254015659130}
-  clip: {fileID: 8300000, guid: fe428988c25afc8498c026d995d20edc, type: 3}
+  enabledAudio: {fileID: 8300000, guid: fe428988c25afc8498c026d995d20edc, type: 3}
+  disabledAudio: {fileID: 8300000, guid: c4512846721cf644281977afb8f50e45, type: 3}
   photoCamera: {fileID: 8086323893851315802}
 --- !u!1 &644163635781935886
 GameObject:

@@ -5,17 +5,19 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class PhotoCapture : MonoBehaviour
 {
-    /*[SerializeField]
-    private Image photoDisplayArea;*/
-
-    [HideInInspector]
-    public GameObject picture;
+    private GameObject picture;
 
     [SerializeField]
     private AudioSource source;
 
     [SerializeField]
-    private AudioClip clip;
+    private AudioClip enabledAudio;
+
+    [SerializeField]
+    private AudioClip disabledAudio;
+
+    // Flag to enable taking photo
+    private bool photoTakingEnabled;
 
     [SerializeField]
     private Camera photoCamera;
@@ -26,18 +28,39 @@ public class PhotoCapture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        photoTakingEnabled = false;
+
         GetComponent<XRGrabInteractable>().activated.AddListener(StartPictureCapture);
     }
 
-    public void StartPictureCapture(ActivateEventArgs args)
+    public void SetPicture(GameObject picture)
     {
-        // Enable processing intensive camera
-        photoCamera.gameObject.SetActive(true);
+        this.picture = picture;
+    }
 
-        // Capture Photo
-        StartCoroutine(CapturePhoto());
+    public void SetPhotoTakingEnabled()
+    {
+        photoTakingEnabled = true;
+    }
 
-        source.clip = clip;
+    private void StartPictureCapture(ActivateEventArgs args)
+    {
+        // When flag is set take a picture, otherwise just play disabledAudio sound
+        if (photoTakingEnabled)
+        {
+            // Enable processing intensive camera
+            photoCamera.gameObject.SetActive(true);
+
+            // Capture Photo
+            StartCoroutine(CapturePhoto());
+
+            source.clip = enabledAudio;
+        }
+        else
+        {
+            source.clip = disabledAudio;
+        }
+
         source.Play();
     }
 
@@ -69,6 +92,9 @@ public class PhotoCapture : MonoBehaviour
 
         // Disable processing intensive camera
         photoCamera.gameObject.SetActive(false);
+
+        // Unset photoTakingEnabled flag
+        photoTakingEnabled = false;
 
         ShowPhoto();
     }

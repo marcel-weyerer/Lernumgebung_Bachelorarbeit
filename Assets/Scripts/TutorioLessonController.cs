@@ -188,7 +188,7 @@ public class TutorioLessonController : MonoBehaviour
 
         yield return new WaitUntil(() => audioFinished);
 
-        if (lessons[currentLesson].GetConditions() != null || lessons[currentLesson].GetConditions().Any())
+        if (lessons[currentLesson].GetConditions() != null && lessons[currentLesson].GetConditions().Any())
             PlayAudioClip(playerAudioSource, beginTask);
 
         // Wait until all conditions of current lesson have been met
@@ -250,8 +250,9 @@ public class TutorioLessonController : MonoBehaviour
     private IEnumerator WaitForCompletion()
     {
         var tasks = lessons[currentLesson].GetCheckList();
+
         // Display tasks on checklist if any exist
-        if (tasks != null || tasks.Any())
+        if (tasks != null && tasks.Any())
             checklistDisplay.GetComponent<DisplayChecklist>().DisplayList(tasks);
 
         var conditionComponent = GetComponent<DetectButtonPress>();
@@ -269,8 +270,9 @@ public class TutorioLessonController : MonoBehaviour
     // StartCongrats is being called, when a lesson has been completed successfully
     private void StartCongrats()
     {
-        // Delete elements on checklist
-        checklistDisplay.GetComponent<DisplayChecklist>().ResetList();
+        // Display tasks on checklist if any exist
+        if (lessons[currentLesson].GetCheckList() != null && lessons[currentLesson].GetCheckList().Any())
+            checklistDisplay.GetComponent<DisplayChecklist>().ResetList();
 
         // Hide Video Player
         if (video.activeSelf)

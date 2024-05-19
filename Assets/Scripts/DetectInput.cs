@@ -161,7 +161,10 @@ public class DetectButtonPress : MonoBehaviour
         // Activate teleportation functionality
         player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
-        return DetectWaypointEnter(condition.objects[0]);
+        if (DetectWaypointEnter(condition.objects[0]))
+            player.GetComponent<TeleportationProvider>().enabled = false;
+
+        return waypointEntered;
     }
 
     private bool DetectContinuousMove(Condition condition)
@@ -219,33 +222,30 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectPhotoTaken(Condition condition)
     {
-        if (condition.objects == null || !condition.objects.Any())
-            throw new Exception("condition.objects must contain one element!");
+        if (condition.objects == null || condition.objects.Length < 2)
+            throw new Exception("condition.objects must contain two element!");
 
         var captureComponent = condition.objects[0].GetComponent<PhotoCapture>();
 
-        // Activate Photo Capture component of camera
-        captureComponent.enabled = true;
+        // Enable photo taking
+        captureComponent.SetPhotoTakingEnabled();
 
         condition.objects[0].GetComponent<XRGrabInteractable>().activated.AddListener((ActivateEnterEventArgs) => { 
             objectActivated = true;
-            captureComponent.picture = condition.objects[1];
+            captureComponent.SetPicture(condition.objects[1]);
         });
 
         // Haptic Impule on completion and reset
         if (objectActivated)
-        {
-            captureComponent.enabled = false;
             rightController.SendHapticImpulse(2, 0.3f);
-        }
 
         return objectActivated;
     }
 
     private bool DetectValueComparison(Condition condition)
     {
-        if (condition.objects == null || !condition.objects.Any())
-            throw new Exception("condition.objects must contain one element!");
+        if (condition.objects == null || condition.objects.Length < 3)
+            throw new Exception("condition.objects must contain four element!");
         if (condition.comparison == null || condition.comparison.Length < 1)
             throw new Exception("condition.comparisons must not be empty or null!");
 
