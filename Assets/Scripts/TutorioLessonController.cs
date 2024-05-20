@@ -210,6 +210,9 @@ public class TutorioLessonController : MonoBehaviour
         rawImage.texture = renderTexture;
 
         video.SetActive(true);
+
+        video.transform.GetChild(1).GetComponent<Animator>().SetTrigger("StartFade");
+
         PlayAudioClip(videoAudioSource, hideShowVideoSound);
     }
 

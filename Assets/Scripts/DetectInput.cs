@@ -104,6 +104,11 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectX_Button(Condition condition)
     {
+        if (condition.objects == null || condition.objects.Length < 2)
+            throw new Exception("condition.objects must contain one element!");
+
+        condition.objects[0].GetComponent<TurnOffLeftHandConrol>().enabled = true;
+
         // Check if X-Button is being pressed
         leftController.TryGetFeatureValue(CommonUsages.primaryButton, out inputDetected);
 
@@ -153,8 +158,8 @@ public class DetectButtonPress : MonoBehaviour
 
     private bool DetectTeleport(Condition condition)
     {
-        if (condition.objects == null || !condition.objects.Any())
-            throw new Exception("condition.objects must contain one element!");
+        if (condition.objects == null || condition.objects.Length < 2)
+            throw new Exception("condition.objects must contain two elements!");
 
         // TODO: Check if component exists in object (same for following methods)
 
@@ -162,7 +167,10 @@ public class DetectButtonPress : MonoBehaviour
         player.GetComponent<ActivateTeleportationRay>().enabled = true;
 
         if (DetectWaypointEnter(condition.objects[0]))
-            player.GetComponent<TeleportationProvider>().enabled = false;
+        {
+            player.GetComponent<ActivateTeleportationRay>().enabled = false;
+            condition.objects[1].SetActive(false);
+        }
 
         return waypointEntered;
     }
